@@ -2,6 +2,8 @@ package dao;
 
 import com.example.programacionweb_its_prac1.User;
 import conexion.Conexion;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -17,26 +19,20 @@ public class UserDAO implements DAOGeneral<Integer, User> {
         return c.ejecutarActualizacion(query, user.getAll());
     }
 
-    public User validacionUsuario(String username, String email) {
-        String query = "SELECT fullName, email, username, password, id FROM users WHERE username = ? OR email = ?";
-        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, new String[]{username, email});
+    public User validacionUsuario(String email) {
+        String query = "SELECT * FROM users WHERE email = ?";
+        System.out.println("El email que usare es " + email);
+        ArrayList<ArrayList<String>> resp = c.ejecutarConsulta(query, new String[]{email});
+        //System.out.println(rs);
 
-        if (!registros.isEmpty()) {
-            ArrayList<String> registro = registros.get(0);
-            String fullName = registro.get(0);
-            String userEmail = registro.get(1);
-            String userUsername = registro.get(2);
-            String userPassword = registro.get(3);
-
-            User user = new User(fullName, userEmail, userUsername, userPassword, null);
-            return user;
+        if(!resp.isEmpty()){
+            ArrayList<String> rs = resp.get(0);//Obtener la primera linea de respuesta
         }
 
-        // Si llegamos a este punto, significa que no se encontró ningún usuario con el username o email proporcionado
+        // Si llegamos a este punto, significa que no se encontró ningún usuario con el email proporcionado
         return null;
     }
-
-
+    
     @Override
     public ArrayList<User> consultar() {
         String query = "SELECT fullName, email, username FROM users";

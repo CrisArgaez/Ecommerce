@@ -133,4 +133,26 @@ public final class Conexion<T> {
         // Si llegamos a este punto, significa que no se encontró ninguna coincidencia
         return false;
     }
+
+    public ResultSet consultarCredenciales(String query, String param) {
+        ResultSet rs = null;
+        try {
+            if (conexion == null) {
+                abrir();
+            }
+            PreparedStatement stmt = conexion.prepareStatement(query);
+            stmt.setString(1, param);
+            rs = stmt.executeQuery();
+
+            // Si rs.next() retorna true, significa que la consulta encontró al menos una coincidencia
+            if (rs.next()) {
+                return rs;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Si llegamos a este punto, significa que no se encontró ninguna coincidencia
+        return null;
+    }
 }

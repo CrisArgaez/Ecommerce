@@ -88,7 +88,7 @@ public class AutenticacionServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         UserDAO userDao = new UserDAO();
-        User InformacionUsuario = userDao.validacionUsuario(username, email);
+        User InformacionUsuario = userDao.validacionUsuario(email);
 
         if (InformacionUsuario != null) {
             if (verifyPassword(password, InformacionUsuario.getPassword())) {

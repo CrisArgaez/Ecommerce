@@ -7,8 +7,6 @@ import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.mindrot.jbcrypt.BCrypt;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 
 import static com.example.programacionweb_its_prac1.AutenticacionServlet.generalKey;
