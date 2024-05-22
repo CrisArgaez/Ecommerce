@@ -1,17 +1,24 @@
 const btnRegistrar = document.getElementById('btnRegistrar');
 
 btnRegistrar.addEventListener('click', () => {
-    
+    event.preventDefault(); // Evita que el formulario se envíe
+
+    // Obtiene los valores de los campos
+    const nombres = document.querySelector('[placeholder="Nombres"]').value;
+    const apellidos = document.querySelector('[placeholder="Apellidos"]').value;
+    const correo = document.querySelector('[placeholder="Correo"]').value;
+    const password = document.querySelector('[placeholder="Contraseña"]').value;
+    registrarUsuario(nombres, password, apellidos, correo);
 });
 
 async function registrarUsuario(nombreUsuario, password, nombreCompleto, correoElectronico) {
     try {
-        const url = "http://localhost:8080/programacion-web-its-prac4/user-servlet";
+        const url = "http://localhost:8080/api/user-servlet";
         const data = {
-            username: nombreUsuario,
-            password: password,
-            fullName: nombreCompleto,
-            email: correoElectronico
+            username : nombreUsuario,
+            password : password,
+            fullName : nombreCompleto,
+            email : correoElectronico
         };
 
         const response = await fetch(url, {
@@ -35,10 +42,6 @@ async function registrarUsuario(nombreUsuario, password, nombreCompleto, correoE
         console.error("Hubo un error al realizar la solicitud:", error);
     }
 }
-
-// Ejemplo de uso
-registrarUsuario("miUsuario", "miContraseña", "Nombre Apellido", "correo@example.com");
-
 
 /*async function registrarUsuario(nombreUsuario, password, nombreCompleto, correoElectronico){
     try {
