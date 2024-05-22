@@ -7,12 +7,12 @@ public class User {
     private String correoelectronico;
     private String pass;
 
-    public User(Integer id, String nombre,String apellidos, String correoelectronico, String passwords) {
+    public User(Integer id, String nombre,String apellidos, String correoelectronico, String pass) {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.correoelectronico = correoelectronico;
-        this.pass = passwords;
+        this.pass = pass;
     }
 
     // Getters y setters
@@ -30,6 +30,14 @@ public class User {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getApellidos() {
+        return apellidos;
+    }
+
+    public void setApellidos(String apellidos){
+        this.apellidos = apellidos;
     }
 
     public String getCorreoelectronico() {
