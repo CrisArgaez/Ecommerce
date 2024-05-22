@@ -1,14 +1,15 @@
 package dao;
 
-import com.example.programacionweb_its_prac1.User;
-import java.util.ArrayList;
+import java.util.List;
 
-public interface DAOGeneral<K, E> {
-    public int registrarUsuario(E elemento);
+public abstract class DAOGeneral<K, T> {
+    public abstract int registrarUsuario(T objeto);
+    public abstract T validacionUsuario(K clavePrimaria);
+    public abstract List<T> mostrarInformacion();
+    public abstract T obtenerPorId(int id);
+    public abstract boolean insertar(T objeto);
+    public  abstract boolean actualizarCantidad(T objeto);
 
-    public ArrayList<E> consultar();
+    public abstract boolean eliminarProductoCarrito(int id);
 
-    boolean verificarCorreo(String email);
-
-    public User consultarUsuario(K id);
 }

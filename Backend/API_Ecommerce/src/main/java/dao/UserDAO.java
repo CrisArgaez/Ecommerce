@@ -6,31 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
-public class UserDAO implements DAOGeneral<Integer, User> {
+public class UserDAO {
     private final Conexion c;
+
     public UserDAO() {
         c = new Conexion<User>();
     }
 
-    @Override
     public int registrarUsuario(User user) {
-        String query = "INSERT INTO users(fullName, email, username, password) VALUES (?, ?, ?, ?)";
-        return c.ejecutarActualizacion(query, user.getAll());
-    }
-
-    public User validacionUsuario(String email) {
-        String query = "SELECT * FROM users WHERE email = ?";
-        System.out.println("El email que usare es " + email);
-        ArrayList<ArrayList<String>> resp = c.ejecutarConsulta(query, new String[]{email});
-        //System.out.println(rs);
-
-        if(!resp.isEmpty()){
-            ArrayList<String> rs = resp.get(0);//Obtener la primera linea de respuesta
-        }
-
-        // Si llegamos a este punto, significa que no se encontró ningún usuario con el email proporcionado
-        return null;
+        // Asegúrate de que los campos coincidan con los de la tabla users en la base de datos
+        String query = "INSERT INTO users (nombre, correoelectronico, contraseña) VALUES (?, ?, ?)";
+        return c.ejecutarActualizacion(query, new String[]{user.getNombre(), user.getCorreoelectronico(), user.getContraseña()});
     }
     
     @Override
@@ -76,5 +62,24 @@ public class UserDAO implements DAOGeneral<Integer, User> {
         return null;
     }
 
-}
+    public User validacionUsuario(String usernameOrEmail) {
+        // Consulta que busca un usuario por nombre o correo electrónico
+        String query = "SELECT id, nombre, correoelectronico, contraseña FROM users WHERE nombre = ? OR correoelectronico = ?";
+        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, new String[]{usernameOrEmail, usernameOrEmail});
 
+        if (!registros.isEmpty()) {
+            ArrayList<String> registro = registros.get(0);
+            Integer id = Integer.parseInt(registro.get(0));
+            String nombre = registro.get(1);
+            String correoelectronico = registro.get(2)  ;
+            String contraseña = registro.get(3);
+
+            // Crear el objeto User con los datos obtenidos
+            User user = new User(id, nombre, correoelectronico, contraseña);
+            return user;
+        }
+
+        return null;
+    }
+
+}

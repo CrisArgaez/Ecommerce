@@ -16,13 +16,24 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url(https://4kwallpapers.com/images/walls/thumbs_2t/4584.png) no-repeat;
+    background-color: #2d3250;
     background-size: cover;
     background-position: center;
+    animation: fadeIn 1.5s ease-in-out; /* Animación de entrada */
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .wrapper {
-    width: 420px;
+    width: 90%;
+    max-width: 420px;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(20px);
@@ -30,11 +41,26 @@ body {
     color: #fff;
     border-radius: 10px;
     padding: 30px 40px;
+    margin: 20px; /* Añadir margen para evitar que se pegue a los bordes en pantallas pequeñas */
+    animation: slideIn 1s ease-out; /* Animación de entrada para el contenedor */
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)); /* Fondo degradado */
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .wrapper h1 {
     text-align: center;
     font-size: 36px;
+    animation: fadeIn 2s ease-in-out; /* Animación de entrada para el título */
 }
 
 .wrapper .input-box {
@@ -42,6 +68,7 @@ body {
     width: 100%;
     height: 50px;
     margin: 30px 0;
+    animation: fadeIn 1.5s ease-in-out; /* Animación de entrada para los campos de entrada */
 }
 
 .input-box input {
@@ -50,47 +77,82 @@ body {
     background: transparent;
     border: none;
     outline: none;
-    border: 2px solid rgba(255,255,255,.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 40px;
     font-size: 16px;
     color: #fff;
-    padding: 20px 45px 20px 20px
+    padding: 20px 45px 20px 20px;
 }
 
-.input-box input::placeholder{
-    color: #fff;
+.input-box input::placeholder {
+    color: rgba(255, 255, 255, 0.7); /* Mejorar la legibilidad del placeholder */
 }
 
-.input-box i{
+.input-box i {
     position: absolute;
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
     font-size: 20px;
+    transition: transform 0.3s ease-in-out; /* Transición suave para el icono */
+}
+
+.input-box input:focus + i {
+    transform: translateY(-50%) scale(1.2); /* Escala del icono en foco */
+    transform: translateY(-50%) rotate(20deg); /* Rotación del icono en foco */
+}
+
+.input-box input:focus {
+    border-color: #e99e75; /* Cambiar el color del borde en el foco */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Resplandor en el foco */
 }
 
 .wrapper .btn {
     width: 100%;
     height: 45px;
-    background: #fff;
+    background: #e99e75;
     border: none;
     outline: none;
     border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     font-size: 16px;
     color: #333;
     font-weight: 600;
     margin-bottom: 30px;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2); /* Borde inicial con sombra */
-    transition: box-shadow 0.3s ease; /* Transición para el cambio de color */
+    box-shadow: 0 0 0 2px #e5a85233;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Transición para el cambio de color */
+    animation: fadeIn 1.5s ease-in-out; /* Animación de entrada para los botones */
 }
 
 .wrapper .btn:hover {
     box-shadow: 0 0 0 2px #000; /* Cambio de color a negro solo en :hover */
+    background-color: #e0e0e0; /* Suavizar el color de fondo en el hover */
 }
 
-.wrapper #btnIrARegistro{
+.wrapper .btn:active {
+    transform: scale(0.95); /* Efecto de pulsación al hacer clic */
+    animation: shake 0.5s; /* Animación de sacudida */
+}
+
+.wrapper #btnIrARegistro {
     margin-bottom: 5px;
 }
-  
+
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+@media (max-width: 480px) {
+    .wrapper {
+        padding: 20px;
+    }
+
+    .btn {
+        font-size: 14px;
+    }
+}
