@@ -1,14 +1,11 @@
 package dao;
 
 import com.example.programacionweb_its_prac1.User;
+import java.util.List;
 import java.util.ArrayList;
 
-public interface DAOGeneral<K, E> {
-    public int registrarUsuario(E elemento);
-
-    public ArrayList<E> consultar();
-
-    boolean verificarCorreo(String email);
-
-    public User consultarUsuario(K id);
+public abstract class DAOGeneral<K, T> {
+    public abstract int registrarUsuario(T objeto);
+    public abstract T validacionUsuario(K clavePrimaria);
+    public abstract List<T> mostrarInformacion();
 }
