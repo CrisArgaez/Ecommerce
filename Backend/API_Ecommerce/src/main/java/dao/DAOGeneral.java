@@ -7,7 +7,7 @@ public interface DAOGeneral<K, T, S> {
 
     public ArrayList<T> consultar();
 
-    public T consultar(K id);
+    public ArrayList<T> consultar(K id);
 
     public T consultarCorreo(S correo);//Usado para verificacion del login
 

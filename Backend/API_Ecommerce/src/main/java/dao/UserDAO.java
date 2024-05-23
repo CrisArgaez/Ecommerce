@@ -2,10 +2,8 @@ package dao;
 
 import com.example.programacionweb_its_prac1.User;
 import conexion.Conexion;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
-import java.util.List;
 
 //UserDAO contiene:
 //registrarUsuario -> A la base de datos y de manera definitiva
@@ -20,7 +18,6 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
     }
 
     public int agregar(User user) {
-        // Asegúrate de que los campos coincidan con los de la tabla users en la base de datos
         String query = "INSERT INTO users (nombre, apellidos, correoelectronico, pass) VALUES (?, ?, ?, ?)";
         return c.ejecutarActualizacion(query, new String[]{user.getNombres(), user.getApellidos(), user.getCorreoelectronico(), user.getPassword()});
     }
@@ -31,7 +28,7 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
     }
 
     @Override
-    public User consultar(Integer id) {
+    public ArrayList<User> consultar(Integer id) {
         return null;
     }
 
@@ -54,13 +51,14 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
             Integer id = Integer.parseInt(registro.get(0));
             String nombres = registro.get(1);
             String apellidos = registro.get(2);
-            String correoelectronico = registro.get(3);
+            String correoelectronico = registro.get(3)  ;
             String contraseña = registro.get(4);
 
             // Crear el objeto User con los datos obtenidos
             User user = new User(id, nombres, apellidos, correoelectronico, contraseña);
             return user;
         }
+
         return null;
     }
 
