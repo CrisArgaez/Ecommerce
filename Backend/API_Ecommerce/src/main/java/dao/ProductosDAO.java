@@ -39,8 +39,25 @@ public class ProductosDAO implements DAOGeneral<Integer, Productos, String> {
 
 
     @Override
-    public Productos consultar(Integer id) {
-        return null;
+    public ArrayList<Productos> consultar(Integer id) {
+        String query = "SELECT * FROM productos WHERE id_producto = ?";
+        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, new String[]{id.toString()});
+        ArrayList<Productos> productos = new ArrayList<>();
+
+        for (ArrayList<String> registro : registros) {
+            int idUsuario = Integer.parseInt(registro.get(0));
+            String nombre = registro.get(1);
+            String urlImagen = registro.get(2);
+            String especificacion = registro.get(3);
+            String descripcion = registro.get(4);
+            int precio = Integer.parseInt(registro.get(5));
+            int existencia = Integer.parseInt(registro.get(6));
+            String galeriaFotos = registro.get(7);
+
+            Productos producto = new Productos(idUsuario, nombre, urlImagen, especificacion, descripcion, precio, existencia, galeriaFotos);
+            productos.add(producto);
+        }
+        return productos;
     }
 
     @Override
