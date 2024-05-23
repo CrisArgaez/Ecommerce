@@ -9,11 +9,13 @@ public class Productos {
     private int precio;
     private int existencia;
 
-    public Productos() {
-        // Constructor vacío
-    }
+    private String galeriaFotos;
 
-    public Productos(int id, String nombre, String urlImagen, String especificacion, String descripcion, int precio, int existencia) {
+    /*public Productos() {
+        // Constructor vacío
+    }*/
+
+    public Productos(int id, String nombre, String urlImagen, String especificacion, String descripcion, int precio, int existencia, String galeriaFotos) {
         this.id = id;
         this.nombre = nombre;
         this.urlImagen = urlImagen;
@@ -21,6 +23,7 @@ public class Productos {
         this.descripcion = descripcion;
         this.precio = precio;
         this.existencia = existencia;
+        this.galeriaFotos = galeriaFotos;
     }
 
     public int getId() {
@@ -77,6 +80,14 @@ public class Productos {
 
     public void setExistencia(int existencia) {
         this.existencia = existencia;
+    }
+
+    public String getGaleriaFotos() {
+        return galeriaFotos;
+    }
+
+    public void setGaleriaFotos(String galeriaFotos) {
+        this.galeriaFotos = galeriaFotos;
     }
 }
 

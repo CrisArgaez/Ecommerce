@@ -47,8 +47,10 @@ public final class Conexion<T> {
         if (abrir()) {
             try {
                 PreparedStatement pst = this.conexion.prepareStatement(query);
-                for (int i = 0; i < params.length; i++) {
-                    pst.setString(i + 1, params[i]);
+                if(params != null) {
+                    for (int i = 0; i < params.length; i++) {
+                        pst.setString(i + 1, params[i]);
+                    }
                 }
                 ResultSet rs = pst.executeQuery();
                 ResultSetMetaData metadata = rs.getMetaData();
