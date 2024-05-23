@@ -3,10 +3,12 @@ package dao;
 
 
 import java.util.ArrayList;
+
+import com.example.programacionweb_its_prac1.Carrito;
 import com.example.programacionweb_its_prac1.Productos;
 import conexion.Conexion;
 
-public class CarritoDAO implements DAOGeneral<Productos> {
+public class CarritoDAO implements DAOGeneral<Integer, Carrito> {
     private final Conexion<Productos> conexion;
 
     public CarritoDAO() {
@@ -20,11 +22,13 @@ public class CarritoDAO implements DAOGeneral<Productos> {
             ArrayList<String> registro = registros.get(0);
             int id = Integer.parseInt(registro.get(0));
             String nombre = registro.get(1);
-            String descripcion = registro.get(2);
-            int precio = Integer.parseInt(registro.get(3));
-            int existencia = Integer.parseInt(registro.get(4));
+            String url_imagen = registro.get(2);
+            String descripcion = registro.get(3);
+            String especificaciones = registro.get(4);
+            int precio = Integer.parseInt(registro.get(5));
+            int existencia = Integer.parseInt(registro.get(6));
 
-            return new Productos(id, nombre, "", "", descripcion, precio, existencia);
+            return new Productos(id,nombre,url_imagen,especificaciones,descripcion,precio,existencia);
         }
 
         return null;
