@@ -12,7 +12,7 @@ import conexion.Conexion;
 //eliminarProductoCarrito -> Usuario elimina producto del carrito
 //actualizarCantidad -> Actualizar existencias al realizar compras
 
-public class CarritoDAO{
+public class CarritoDAO {
     private final Conexion<Productos> conexion;
 
     public CarritoDAO() {
@@ -53,7 +53,7 @@ public class CarritoDAO{
         int precio = Integer.parseInt(registro.get(3));
         int existencia = Integer.parseInt(registro.get(4));
 
-        return new Productos(id, nombre, "", "", descripcion, precio, existencia);
+        return null;//new Productos(id, nombre, "", "", descripcion, precio, existencia);
     }
 }
 

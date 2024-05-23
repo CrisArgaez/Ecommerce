@@ -16,6 +16,12 @@ public class ProductosDAO implements DAOGeneral<Integer, Productos, String> {
         return 0;
     }
 
+    @Override
+    public int agregarArticuloCarrito(Integer id_Usuario, Integer id_Producto) {
+        String query = "INSERT INTO carrito_de_compras (id_usuario, id_producto) VALUES (?, ?)";
+        return c.ejecutarActualizacion(query, new String[]{String.valueOf(id_Usuario), String.valueOf(id_Producto)});
+    }
+
     public ArrayList<Productos> consultar() {
         String query = "SELECT * FROM productos";
         ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, null);
