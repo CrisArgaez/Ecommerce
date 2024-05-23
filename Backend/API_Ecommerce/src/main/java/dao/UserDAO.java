@@ -51,13 +51,14 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
             Integer id = Integer.parseInt(registro.get(0));
             String nombres = registro.get(1);
             String apellidos = registro.get(2);
-            String correoelectronico = registro.get(3);
+            String correoelectronico = registro.get(3)  ;
             String contraseña = registro.get(4);
 
             // Crear el objeto User con los datos obtenidos
             User user = new User(id, nombres, apellidos, correoelectronico, contraseña);
             return user;
         }
+
         return null;
     }
 
