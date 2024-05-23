@@ -41,6 +41,13 @@ document.addEventListener('DOMContentLoaded', async function() {
             item.appendChild(botonCarrito);
         
             containerItems.appendChild(item);
+
+            //Agregar el listener al div del producto para redirigirlo a una pagina con sus especificaciones
+            item.addEventListener("click", () => {
+                window.location.href = `articulo.html?id=${producto.id}`; //mandamos el id del articulo por medio de la URL
+            });
+
+            
           });
       
 
@@ -48,3 +55,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.error("Hubo un error al realizar la solicitud:", error);
     }
 });
+
+
+
+
+
+
+
