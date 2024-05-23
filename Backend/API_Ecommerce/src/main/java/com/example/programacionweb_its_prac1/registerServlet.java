@@ -45,18 +45,18 @@ public class registerServlet extends HttpServlet {
 
         User userRequest = gson.fromJson(req.getReader(), User.class);
 
-        String username = userRequest.getUsername();
+        String nombres = userRequest.getNombres();
+        String apellidos = userRequest.getApellidos();
+        String correo = userRequest.getCorreoelectronico();
         String password = userRequest.getPassword();
-        String fullName = userRequest.getFullName();
-        String email = userRequest.getEmail();
         Integer id = null;
 
         //Revisa que los parametros existan en la URL
-        if (username == null || password == null || fullName == null || email == null) {
+        if (nombres == null || apellidos == null || correo == null || password == null) {
             jResp.failed(req, resp, "Es necesario que rellenes todos los parámetros", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return;
         }//Revisa que los parametros no esten vacios
-        else if (username.isEmpty() || password.isEmpty() || fullName.isEmpty() || email.isEmpty()) {
+        else if (nombres.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || password.isEmpty()) {
             jResp.failed(req, resp, "Es necesario que rellenes todos los datos", HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -65,10 +65,10 @@ public class registerServlet extends HttpServlet {
 
         UserDAO userDao = new UserDAO();
 
-        if(!userDao.verificarCorreo(email)){
-            User user = new User(fullName, email, username, encryptedPassword, null);
+        if(userDao.consultarCorreo(correo) == null){
+            User user = new User( null, nombres, apellidos, correo, encryptedPassword);
 
-            int estadoOperacion = userDao.registrarUsuario(user);
+            int estadoOperacion = userDao.agregar(user);
 
             if(estadoOperacion != -1){
                 id = estadoOperacion;

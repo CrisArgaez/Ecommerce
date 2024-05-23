@@ -1,15 +1,17 @@
 package dao;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public abstract class DAOGeneral<K, T> {
-    public abstract int registrarUsuario(T objeto);
-    public abstract T validacionUsuario(K clavePrimaria);
-    public abstract List<T> mostrarInformacion();
-    public abstract T obtenerPorId(int id);
-    public abstract boolean insertar(T objeto);
-    public  abstract boolean actualizarCantidad(T objeto);
+public interface DAOGeneral<K, T, S> {
+    public int agregar(T elemento);
 
-    public abstract boolean eliminarProductoCarrito(int id);
+    public ArrayList<T> consultar();
 
+    public T consultar(K id);
+
+    public T consultarCorreo(S correo);//Usado para verificacion del login
+
+    public int actualizar(K id, T elemento);
+
+    public int eliminar(K id);
 }

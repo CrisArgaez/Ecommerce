@@ -5,64 +5,67 @@ import conexion.Conexion;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class UserDAO {
+//UserDAO contiene:
+//registrarUsuario -> A la base de datos y de manera definitiva
+//verificarCorreo -> Para que el correo no se repita (no implementado)
+//validacionUsuario -> Completar el login de ecommerce
+
+public class UserDAO implements DAOGeneral<Integer, User, String> {
     private final Conexion c;
 
     public UserDAO() {
         c = new Conexion<User>();
     }
 
-    public int registrarUsuario(User user) {
+    public int agregar(User user) {
         // Asegúrate de que los campos coincidan con los de la tabla users en la base de datos
-        String query = "INSERT INTO users (nombre, correoelectronico, contraseña) VALUES (?, ?, ?)";
-        return c.ejecutarActualizacion(query, new String[]{user.getNombre(), user.getCorreoelectronico(), user.getContraseña()});
+        String query = "INSERT INTO users (nombre, apellidos, correoelectronico, pass) VALUES (?, ?, ?, ?)";
+        return c.ejecutarActualizacion(query, new String[]{user.getNombres(), user.getApellidos(), user.getCorreoelectronico(), user.getPassword()});
     }
-    
+
     @Override
     public ArrayList<User> consultar() {
-        String query = "SELECT fullName, email, username FROM users";
-        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, new String[]{});
-
-        ArrayList<User> users = new ArrayList<>();
-        for (ArrayList<String> registro : registros) {
-            String fullName = registro.get(0);
-            String email = registro.get(1);
-            String username = registro.get(2);
-
-            User user = new User(fullName, email, username, null, null);
-            users.add(user);
-        }
-        return users;
-    }
-
-    @Override
-    public boolean verificarCorreo(String email) {
-        String query = "SELECT email FROM users WHERE email = ?";
-        return c.verificacionConsulta(query, email);
-    }
-
-    @Override
-    public User consultarUsuario(Integer id) {
-        String query = "SELECT fullName, email, username FROM users WHERE id = ?";
-        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, new String[]{id.toString()});
-
-        if (!registros.isEmpty()) {
-            ArrayList<String> registro = registros.get(0);
-            String fullName = registro.get(0);
-            String email = registro.get(1);
-            String username = registro.get(2);
-
-            // Como no estamos seleccionando la contraseña, la establecemos como null
-            User user = new User(fullName, email, username, null, null);
-            return user;
-        }
-
-        // Si llegamos a este punto, significa que no se encontró ningún usuario con el id proporcionado
         return null;
     }
 
-    public User validacionUsuario(String usernameOrEmail) {
+    @Override
+    public User consultar(Integer id) {
+        return null;
+    }
+
+    @Override
+    public int actualizar(Integer id, User elemento) {
+        return 0;
+    }
+
+    @Override
+    public int eliminar(Integer id) {
+        return 0;
+    }
+
+    public User consultarCorreo(String correo) {
+        String query = "SELECT id, nombre, apellidos, correoelectronico, pass FROM users WHERE correoelectronico = ?";
+        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, new String[]{correo});
+
+        if (!registros.isEmpty()) {
+            ArrayList<String> registro = registros.get(0);
+            Integer id = Integer.parseInt(registro.get(0));
+            String nombres = registro.get(1);
+            String apellidos = registro.get(2);
+            String correoelectronico = registro.get(3)  ;
+            String contraseña = registro.get(4);
+
+            // Crear el objeto User con los datos obtenidos
+            User user = new User(id, nombres, apellidos, correoelectronico, contraseña);
+            return user;
+        }
+
+        return null;
+    }
+
+    /*public User validacionUsuario(String usernameOrEmail) {
         // Consulta que busca un usuario por nombre o correo electrónico
         String query = "SELECT id, nombre, correoelectronico, contraseña FROM users WHERE nombre = ? OR correoelectronico = ?";
         ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, new String[]{usernameOrEmail, usernameOrEmail});
@@ -70,16 +73,17 @@ public class UserDAO {
         if (!registros.isEmpty()) {
             ArrayList<String> registro = registros.get(0);
             Integer id = Integer.parseInt(registro.get(0));
-            String nombre = registro.get(1);
-            String correoelectronico = registro.get(2)  ;
-            String contraseña = registro.get(3);
+            String nombres = registro.get(1);
+            String apellidos = registro.get(2);
+            String correoelectronico = registro.get(3)  ;
+            String contraseña = registro.get(4);
 
             // Crear el objeto User con los datos obtenidos
-            User user = new User(id, nombre, correoelectronico, contraseña);
+            User user = new User(id, nombres, apellidos, correoelectronico, contraseña);
             return user;
         }
 
         return null;
-    }
+    }*/
 
 }
