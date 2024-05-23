@@ -54,12 +54,12 @@ public class loginServlet extends HttpServlet {
         User userRequest = gson.fromJson(req.getReader(), User.class);
 
         String password = userRequest.getPassword();
-        String email = userRequest.getEmail();
+        String email = userRequest.getCorreoelectronico();
 
         System.out.println(email);
 
         UserDAO userDao = new UserDAO();
-        User InformacionUsuario = userDao.validacionUsuario(email);
+        User InformacionUsuario = userDao.consultarCorreo(email);
 
         if (InformacionUsuario != null) {
             System.out.println("Hola si llegue aqui");
@@ -74,7 +74,7 @@ public class loginServlet extends HttpServlet {
                         .signWith(generalKey())
                         .compact();
 
-                jResp.success(req, resp, "Usuario encontrado y autenticado", token);
+                jResp.success(req, resp, "Usuario " + InformacionUsuario.getNombres() + " " + InformacionUsuario.getApellidos() +" encontrado y autenticado, ¡Bienvenido!", token);
                 return;
             }
         }

@@ -29,7 +29,6 @@ public class ProductosDAO {
             Productos producto = new Productos(id, nombre, urlImagen, especificacion, descripcion, precio, existencia);
             productos.add(producto);
         }
-
         return productos;
     }
 }

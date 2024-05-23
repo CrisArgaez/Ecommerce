@@ -1,20 +1,22 @@
 package dao;
 
-
-
 import java.util.ArrayList;
-
-import com.example.programacionweb_its_prac1.Carrito;
 import com.example.programacionweb_its_prac1.Productos;
 import conexion.Conexion;
 
-public class CarritoDAO implements DAOGeneral<Integer, Carrito> {
+//CarritoDAO contiene:
+//obtenerProducto -> Obtener los datos de un producto especifico
+//eliminarProductoCarrito -> Usuario elimina producto del carrito
+//actualizarCantidad -> Actualizar existencias al realizar compras
+
+public class CarritoDAO{
     private final Conexion<Productos> conexion;
 
     public CarritoDAO() {
-        conexion = new Conexion<>();
+        conexion = new Conexion<Productos>();
     }
-    public Productos obtenerProducto(int idProducto) {
+
+    public Productos consultar(int idProducto) {
         String query = "SELECT id_producto, nombre, descripcion, precio, existencia FROM carrito_de_compras WHERE id_producto = ?";
         ArrayList<ArrayList<String>> registros = conexion.ejecutarConsulta(query, new String[]{String.valueOf(idProducto)});
 
@@ -22,13 +24,11 @@ public class CarritoDAO implements DAOGeneral<Integer, Carrito> {
             ArrayList<String> registro = registros.get(0);
             int id = Integer.parseInt(registro.get(0));
             String nombre = registro.get(1);
-            String url_imagen = registro.get(2);
-            String descripcion = registro.get(3);
-            String especificaciones = registro.get(4);
-            int precio = Integer.parseInt(registro.get(5));
-            int existencia = Integer.parseInt(registro.get(6));
+            String descripcion = registro.get(2);
+            int precio = Integer.parseInt(registro.get(3));
+            int existencia = Integer.parseInt(registro.get(4));
 
-            return new Productos(id,nombre,url_imagen,especificaciones,descripcion,precio,existencia);
+            return new Productos(id, nombre, "", "", descripcion, precio, existencia);
         }
 
         return null;

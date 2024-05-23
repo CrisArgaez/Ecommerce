@@ -2,17 +2,18 @@ package com.example.programacionweb_its_prac1;
 
 public class User {
     private Integer id;
-    private String nombre;
+    private String nombres;
+
     private String apellidos;
     private String correoelectronico;
-    private String pass;
+    private String password;
 
-    public User(Integer id, String nombre,String apellidos, String correoelectronico, String pass) {
+    public User(Integer id, String nombres, String apellidos, String correoelectronico, String password) {
         this.id = id;
-        this.nombre = nombre;
+        this.nombres = nombres;
         this.apellidos = apellidos;
         this.correoelectronico = correoelectronico;
-        this.pass = pass;
+        this.password = password;
     }
 
     // Getters y setters
@@ -24,19 +25,19 @@ public class User {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
     public String getApellidos() {
         return apellidos;
     }
 
-    public void setApellidos(String apellidos){
+    public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
     }
 
@@ -48,11 +49,7 @@ public class User {
         this.correoelectronico = correoelectronico;
     }
 
-    public String getPass() {
-        return pass;
-    }
-
-    public void setPass(String pass) {
-        this.pass = pass;
+    public String getPassword() {
+        return password;
     }
 }
