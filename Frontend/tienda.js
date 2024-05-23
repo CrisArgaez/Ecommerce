@@ -33,7 +33,7 @@ const productos = [
       },
       {
         titulo: "Producto 7",
-        imagen: "https://m.media-amazon.com/images/I/91im+xo9jQL._AC_SX569_.jpg",
+        imagen: "",
         precio: 29.99,
       },
       {
@@ -79,6 +79,3 @@ const productos = [
   
   // Llama a la función para cargar los productos al cargar la página
   crearProductos();
-  
-  
-  
