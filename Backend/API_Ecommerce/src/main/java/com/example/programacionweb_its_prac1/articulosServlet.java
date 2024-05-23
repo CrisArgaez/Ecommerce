@@ -30,10 +30,11 @@ public class articulosServlet extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         addCorsHeaders(resp);
         resp.setContentType("application/json");
-
-        if (req.getPathInfo().equals("/")) {
+        obtenerArticulos(req, resp);
+        /*String pathInfo = req.getPathInfo();
+        if (pathInfo != null) {
             obtenerArticulos(req, resp);
-        }
+        }*/
     }
 
     @Override
@@ -44,7 +45,7 @@ public class articulosServlet extends HttpServlet{
 
     private void obtenerArticulos(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ProductosDAO articulosDAO = new ProductosDAO();
-        List<Productos> productos = articulosDAO.mostrarInformacion();
-        jResp.success(req, resp, "Listado de usuarios: ", productos);
+        List<Productos> productos = articulosDAO.consultar();
+        jResp.success(req, resp, "Listado de productos: ", productos);
     }
 }
