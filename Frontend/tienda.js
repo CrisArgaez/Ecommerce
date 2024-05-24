@@ -46,6 +46,12 @@ document.addEventListener('DOMContentLoaded', async function() {
             item.addEventListener("click", () => {
                 window.location.href = `articulo.html?id=${producto.id}`;
             });
+
+            //Agregar el listener al icono de agregar al carrito
+            botonCarrito.addEventListener("click", () => {
+                event.stopPropagation(); // Evitar que se active el evento click de la tarjeta
+                console.log("Agregado al carrito:", producto);
+            });
   
             
           });
@@ -55,3 +61,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.error("Hubo un error al realizar la solicitud:", error);
     }
   });
+
+
+
+
+
+  /*function agregarAlCarrito(producto) {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    carrito.push(producto);
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+  }*/
+
