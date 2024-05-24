@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         //Aquí es donde insertamos los datos en el HTML
         document.getElementById('nombre-producto').textContent = articulo.nombre;
         document.getElementById('precio-producto').textContent = `$${articulo.precio.toFixed(2)}`,
-        document.getElementById('cantidad-disponible').textContent = articulo.existencia;
+        document.getElementById('cantidad-disponible').textContent = 'Cantidades disponibles: ' + articulo.existencia;
         document.getElementById('descripción-producto').textContent = articulo.descripcion;
 
         // Obtener las especificaciones como un array

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="carrito.css" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Pagina Principal</title>
+</head>
+
+<body>
+    <!-- Header -->
+    <header> 
+        <div class="nav container">
+            <a href="index.html" class="logo">EcommerceITS</a>
+
+            <a href="acceder.html" class="logo">Login</a>
+
+            <!--icono del carrito de compras-->
+            <i class='bx bx-cart' style='color:#2a4995' id="cart-icon"></i>
+        </div>
+    </header>
+
+        <div class="cart">
+            <h2 class="cart-title">Productos en el carrito</h2>
+
+            <!--Contenido-->
+            <div class="cart-content">
+
+                <div class="cart-box">
+                    <img src="https://i.pinimg.com/564x/31/d6/3a/31d63a2d2606abf32cf7ab6a614e3075.jpg" class="cart-image">           
+                    <div class="detail-box">
+                        <div class="cart-product-title"> Saco de vestir </div>
+                        <div class="cart-price">$25</div>
+
+                        <div class="quantity-container">
+                            <input type="number" value="1" class="cart-quantity">
+                            <button type="button" class="quantity-button">Confirmar cantidad</button>
+                        </div>
+                    </div>
+
+                    <!--icono remover del carrito-->
+                    <i class='bx bxs-trash-alt cart-remove'></i>
+                </div>
+            </div>
+
+            <!--Total-->
+            <div class="total">
+                <div class="total-title">Total</div>
+                <div class="total-price">$0</div>
+            </div>
+
+            <!--Boton de comprar -->
+            <button type="button" class="btn-buy">Comprar</button>
+
+        </div> 
+   <!--- <script src="tienda.js"> </script> -->
+</body>
+</html>
