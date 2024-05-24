@@ -13,7 +13,13 @@ public interface DAOGeneral<K, T, S> {
 
     public T consultarCorreo(S correo);//Usado para verificacion del login
 
-    public int actualizar(K id, T elemento);
-
     public int eliminar(K id_Usuario, K id_Producto);
+
+    public int eliminarCarritoUsuario(K id_Usuario);
+
+    public int consultarExistencia(K id);
+
+    public int actualizarExistencia(K id, int nuevaCantidad);
+
+    public int actualizarCantidadCompra(K cantidadCompra, K id_Usuario, K id_Producto);
 }

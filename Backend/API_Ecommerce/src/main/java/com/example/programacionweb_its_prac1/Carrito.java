@@ -6,10 +6,13 @@ public class Carrito {
     private int idUsuario;
     private int idProducto;
 
-    public Carrito(int idCarrito, int idUsuario, int idProducto) {
+    private int cantidadCompra;
+
+    public Carrito(int idCarrito, int idUsuario, int idProducto, int cantidadCompra) {
         this.idCarrito = idCarrito;
         this.idUsuario = idUsuario;
         this.idProducto = idProducto;
+        this.cantidadCompra = cantidadCompra;
     }
 
     // Getters y Setters
@@ -35,6 +38,12 @@ public class Carrito {
 
     public void setIdProducto(int idProducto) {
         this.idProducto = idProducto;
+    }
+
+    public int getCantidadCompra(){return cantidadCompra;}
+
+    public void setCantidadCompra(int cantidadCompra){
+        this.cantidadCompra = cantidadCompra;
     }
 }
 
