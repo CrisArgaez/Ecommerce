@@ -18,7 +18,7 @@ public class ProductosDAO implements DAOGeneral<Integer, Productos, String> {
 
     @Override
     public int agregarArticuloCarrito(Integer id_Usuario, Integer id_Producto) {
-        String query = "INSERT INTO carrito_de_compras (id_usuario, id_producto) VALUES (?, ?)";
+        String query = "INSERT INTO carrito_de_compras (id_usuario, id_producto, cantidadCompra) VALUES (?, ?, 1)";
         return c.ejecutarActualizacion(query, new String[]{String.valueOf(id_Usuario), String.valueOf(id_Producto)});
     }
 
@@ -72,12 +72,38 @@ public class ProductosDAO implements DAOGeneral<Integer, Productos, String> {
     }
 
     @Override
-    public int actualizar(Integer id, Productos elemento) {
+    public int eliminar(Integer id, Integer id2) {
         return 0;
     }
 
     @Override
-    public int eliminar(Integer id, Integer id2) {
+    public int eliminarCarritoUsuario(Integer id_Usuario) {
+        return 0;
+    }
+
+    @Override
+    public int consultarExistencia(Integer id) {
+        String query = "SELECT existencia FROM productos WHERE id_producto = ?";
+        ArrayList<String> parametros = new ArrayList<>();
+        parametros.add(String.valueOf(id));
+
+        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, parametros.toArray(new String[0]));
+
+        if (registros.size() == 0) {
+            return -1;
+        }
+        String existenciaStr = registros.get(0).get(0);
+        return Integer.parseInt(existenciaStr);
+    }
+
+    @Override
+    public int actualizarExistencia(Integer id, int nuevaCantidad) {
+        String query = "UPDATE productos SET existencia = ? WHERE id_producto = ?";
+        return c.ejecutarActualizacion(query, new String[]{String.valueOf(nuevaCantidad), String.valueOf(id)});
+    }
+
+    @Override
+    public int actualizarCantidadCompra(Integer cantidadCompra,Integer id_Usuario, Integer id_Producto) {
         return 0;
     }
 }

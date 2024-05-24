@@ -38,12 +38,27 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
     }
 
     @Override
-    public int actualizar(Integer id, User elemento) {
+    public int eliminar(Integer id, Integer id2) {
         return 0;
     }
 
     @Override
-    public int eliminar(Integer id, Integer id2) {
+    public int eliminarCarritoUsuario(Integer id_Usuario) {
+        return 0;
+    }
+
+    @Override
+    public int consultarExistencia(Integer id) {
+        return 0;
+    }
+
+    @Override
+    public int actualizarExistencia(Integer id, int nuevaCantidad) {
+        return 0;
+    }
+
+    @Override
+    public int actualizarCantidadCompra(Integer cantidadCompra, Integer id_Usuario, Integer id_Producto) {
         return 0;
     }
 
@@ -66,26 +81,4 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
 
         return null;
     }
-
-    /*public User validacionUsuario(String usernameOrEmail) {
-        // Consulta que busca un usuario por nombre o correo electrónico
-        String query = "SELECT id, nombre, correoelectronico, contraseña FROM users WHERE nombre = ? OR correoelectronico = ?";
-        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, new String[]{usernameOrEmail, usernameOrEmail});
-
-        if (!registros.isEmpty()) {
-            ArrayList<String> registro = registros.get(0);
-            Integer id = Integer.parseInt(registro.get(0));
-            String nombres = registro.get(1);
-            String apellidos = registro.get(2);
-            String correoelectronico = registro.get(3)  ;
-            String contraseña = registro.get(4);
-
-            // Crear el objeto User con los datos obtenidos
-            User user = new User(id, nombres, apellidos, correoelectronico, contraseña);
-            return user;
-        }
-
-        return null;
-    }*/
-
 }

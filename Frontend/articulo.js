@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         const responseData = await response.json();
         console.log(responseData.data) //Imprimir el valor del json "message"
 
+
+
         //console.log(responseData.data) //Imprimir el valor del json "message"
         const articulo = responseData.data[0];
 
@@ -75,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
         });
         
-    
+
     } catch (error) {
         console.error('Hubo un error al obtener los datos del producto:', error);
     }
