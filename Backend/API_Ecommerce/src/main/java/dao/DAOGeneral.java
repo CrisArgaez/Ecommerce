@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public interface DAOGeneral<K, T, S> {
     public int agregar(T elemento);
 
+    public int agregarArticuloCarrito(K id_Usuario, K id_Producto);
+
     public ArrayList<T> consultar();
 
     public T consultar(K id);

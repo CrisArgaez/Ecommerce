@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estiloArticulo.css" />
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <title>Articulo</title>
+    <title>Detalles del producto</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" 
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
@@ -27,43 +27,29 @@
         </div>
     </header>
 
-    <!--Seccion de mostrar la info del articuloi-->
-    <section class="shop container">
-        <h2 class="section-title">Detalles del articulo </h2>
-    </section>
-
     <!--Seccion de mostrar la info del articulo-->
     <section class="container sproduct my-5 pt-5">
+        <h2 class="section-title">Detalles del producto </h2>
         <div class="row mt-5">
             <div class="col-lg-5 col-md-12 col-12">
-                <img class="img-fluid w-100 pb-1" src="https://m.media-amazon.com/images/I/91im+xo9jQL._AC_SX569_.jpg" alt="">
+                <img class="img-fluid w-100 pb-1" id="imagen-principal" alt="">
 
-                <div class="small-img-group">
-                    <div class="small-img-col">
-                        <img src="https://m.media-amazon.com/images/I/91C8Fvpm5FL._AC_SX385_.jpg" width="100%" class="small-img">
-                    </div>
-                    <div class="small-img-col">
-                        <img src="https://m.media-amazon.com/images/I/91FmNbWBW8L._AC_SX385_.jpg" width="100%" class="small-img">
-                    </div>
-                    <div class="small-img-col">
-                        <img src="https://m.media-amazon.com/images/I/91wKPSiO9NL._AC_SX385_.jpg" width="100%" class="small-img">
-                    </div>
-                    <div class="small-img-col">
-                        <img src="https://m.media-amazon.com/images/I/91wKPSiO9NL._AC_SX385_.jpg" width="100%" class="small-img">
-                    </div>
+                <div class="small-img-group" id="galeria-imagenes">
+                    <!--Aqui se deberia crear el elemento img para la imagen del articulo y el elemento img para la imagen de la galería-->
                 </div>
             </div>  
 
             <div class="col-lg-6 col-md-12 col-12">
-                <h3>Titulo del producto</h3>
-                <h2>Precio</h2>
-                <h5> Especificacion 1</h5>
-                <h5> Especificacion 2</h5>
-                <h5> Especificacion 3</h5>
-                <h4> Articulos disponibles: </h4>
-                <button class="buy-btn"> Añadir al carrito</button>
-                <h4> Descripción del producto</h4>
-                <span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod. dsdfr</span>
+                <h3 id="nombre-producto"></h3>
+                <h2 id="precio-producto"></h2>
+                <h5 id="especificaciones-producto"></h5>
+                <h4 id="cantidad-disponible"></h4>
+                
+                <button class="buy-btn "> Añadir al carrito</button>
+                <h4 class="mt-5 mb-3"> Descripción del producto</h4>
+                <span> 
+                    <p id="descripción-producto"></p>
+                </span>
 
             </div>
         </div>
@@ -74,6 +60,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    <script src="articulo.js"></script>
 
 </body>
 </html>

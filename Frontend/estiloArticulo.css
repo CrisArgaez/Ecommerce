@@ -90,5 +90,16 @@ header{
     cursor: pointer;
 }
 
+.buy-btn{
+    background: var(--text-color);
+    color: var(--bg-color);
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 
 

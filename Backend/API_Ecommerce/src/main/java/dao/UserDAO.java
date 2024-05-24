@@ -24,6 +24,11 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
     }
 
     @Override
+    public int agregarArticuloCarrito(Integer id_Usuario, Integer id_Producto) {
+        return 0;
+    }
+
+    @Override
     public ArrayList<User> consultar() {
         return null;
     }
