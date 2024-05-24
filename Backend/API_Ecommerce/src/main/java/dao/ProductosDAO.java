@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import com.example.programacionweb_its_prac1.Productos;
 import conexion.Conexion;
 
-public class ProductosDAO implements DAOGeneral<Integer, Productos, String> {
+public class ProductosDAO implements DAOGeneral<Integer,Productos,String>{
     private final Conexion c;
 
     public ProductosDAO() {
@@ -17,10 +17,9 @@ public class ProductosDAO implements DAOGeneral<Integer, Productos, String> {
     }
 
     public ArrayList<Productos> consultar() {
-        String query = "SELECT * FROM productos";
+        String query = "SELECT id_producto, nombre, url_imagen, especificacion, descripcion, precio, existencia, galeriaFotos FROM productos";
         ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, null);
         ArrayList<Productos> productos = new ArrayList<>();
-
         for (ArrayList<String> registro : registros) {
             int id = Integer.parseInt(registro.get(0));
             String nombre = registro.get(1);
@@ -29,35 +28,17 @@ public class ProductosDAO implements DAOGeneral<Integer, Productos, String> {
             String descripcion = registro.get(4);
             int precio = Integer.parseInt(registro.get(5));
             int existencia = Integer.parseInt(registro.get(6));
-            String galeriaFotos = registro.get(7);
+            String galeria = registro.get(7);
 
-            Productos producto = new Productos(id, nombre, urlImagen, especificacion, descripcion, precio, existencia, galeriaFotos);
+            Productos producto = new Productos(id, nombre, urlImagen, especificacion, descripcion, precio, existencia,galeria);
             productos.add(producto);
         }
         return productos;
     }
 
-
     @Override
-    public ArrayList<Productos> consultar(Integer id) {
-        String query = "SELECT * FROM productos WHERE id_producto = ?";
-        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, new String[]{id.toString()});
-        ArrayList<Productos> productos = new ArrayList<>();
-
-        for (ArrayList<String> registro : registros) {
-            int idUsuario = Integer.parseInt(registro.get(0));
-            String nombre = registro.get(1);
-            String urlImagen = registro.get(2);
-            String especificacion = registro.get(3);
-            String descripcion = registro.get(4);
-            int precio = Integer.parseInt(registro.get(5));
-            int existencia = Integer.parseInt(registro.get(6));
-            String galeriaFotos = registro.get(7);
-
-            Productos producto = new Productos(idUsuario, nombre, urlImagen, especificacion, descripcion, precio, existencia, galeriaFotos);
-            productos.add(producto);
-        }
-        return productos;
+    public Productos consultar(Integer id) {
+        return null;
     }
 
     @Override

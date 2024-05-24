@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.programacionweb_its_prac1.Carrito;
 import com.example.programacionweb_its_prac1.Productos;
 import conexion.Conexion;
 
@@ -12,48 +13,61 @@ import conexion.Conexion;
 //eliminarProductoCarrito -> Usuario elimina producto del carrito
 //actualizarCantidad -> Actualizar existencias al realizar compras
 
-public class CarritoDAO{
-    private final Conexion<Productos> conexion;
+public class CarritoDAO implements DAOGeneral<Integer,Carrito,String>{
+    private final Conexion c;
 
     public CarritoDAO() {
-        conexion = new Conexion<Productos>();
+        c = new Conexion<Carrito>();
     }
 
-    public List<Productos> consultarPorIds(List<Integer> idProductos) {
-        if (idProductos == null || idProductos.isEmpty()) {
-            return new ArrayList<>();
+    @Override
+    public int agregar(Carrito elemento) {
+        return 0;
+    }
+
+    @Override
+    public ArrayList<Carrito> consultar() {
+        return null;
+    }
+
+    @Override
+    public Carrito consultar(Integer id) {
+        String query = "SELECT id_carrito, id_producto, id_usuario FROM productos WHERE id_producto = ?";
+        ArrayList<String> parametros = new ArrayList<>();
+        parametros.add(id.toString());
+        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, null);
+
+        if (registros.isEmpty()) {
+
+            return null;
         }
 
-        String query = "SELECT id_producto, nombre, descripcion, precio, existencia FROM carrito_de_compras WHERE id_producto IN (" +
-                idProductos.stream().map(String::valueOf).collect(Collectors.joining(",")) + ")";
-        ArrayList<ArrayList<String>> registros = conexion.ejecutarConsulta(query, new String[]{});
+        ArrayList<String> registro = registros.get(0);
+        int carritoId = Integer.parseInt(registro.get(0));
+        int productoId = Integer.parseInt(registro.get(1));
+        int usuarioId = Integer.parseInt(registro.get(2));
 
-        List<Productos> productos = new ArrayList<>();
-        for (ArrayList<String> registro : registros) {
-            productos.add(convertirRegistroAProducto(registro));
-        }
-
-        return productos;
+        Carrito carrito = new Carrito(carritoId, productoId, usuarioId);
+        return carrito;
     }
 
-    public int eliminarProductoCarrito(int idProducto) {
-        String query = "DELETE FROM carrito_de_compras WHERE id_producto = ?";
-        return conexion.ejecutarActualizacion(query, new String[]{String.valueOf(idProducto)});
+
+    @Override
+    public Carrito consultarCorreo(String correo) {
+        return null;
     }
 
-    public int actualizarCantidad(int idProducto, int nuevaCantidad) {
-        String query = "UPDATE carrito_de_compras SET existencia = ? WHERE id_producto = ?";
-        return conexion.ejecutarActualizacion(query, new String[]{String.valueOf(nuevaCantidad), String.valueOf(idProducto)});
+
+
+    @Override
+    public int actualizar(Integer id, Carrito elemento) {
+        return 0;
     }
 
-    private Productos convertirRegistroAProducto(ArrayList<String> registro) {
-        int id = Integer.parseInt(registro.get(0));
-        String nombre = registro.get(1);
-        String descripcion = registro.get(2);
-        int precio = Integer.parseInt(registro.get(3));
-        int existencia = Integer.parseInt(registro.get(4));
-
-        return new Productos(id, nombre, "", "", descripcion, precio, existencia);
+    @Override
+    public int eliminar(Integer id) {
+        String query = "DELETE FROM carrito_de_compras WHERE id_producto = ? AND i= ";
+        return c.ejecutarActualizacion(query, new String[]{String.valueOf(id)});
     }
 }
 

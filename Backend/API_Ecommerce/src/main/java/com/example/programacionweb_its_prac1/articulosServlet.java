@@ -30,14 +30,7 @@ public class articulosServlet extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         addCorsHeaders(resp);
         resp.setContentType("application/json");
-        String pathInfo = req.getPathInfo();
-        if (pathInfo != null) {
-            String idString = pathInfo.substring(1);
-            int id = Integer.parseInt(idString);
-            obtenerArticuloEspecifico(req, resp, id);
-        }else{
-            obtenerArticulos(req, resp);
-        }
+        obtenerArticulos(req, resp);
     }
 
     @Override
@@ -50,16 +43,5 @@ public class articulosServlet extends HttpServlet{
         ProductosDAO articulosDAO = new ProductosDAO();
         List<Productos> productos = articulosDAO.consultar();
         jResp.success(req, resp, "Listado de productos: ", productos);
-    }
-
-    private void obtenerArticuloEspecifico(HttpServletRequest req, HttpServletResponse resp, Integer id) throws IOException {
-        ProductosDAO articulosDAO = new ProductosDAO();
-        List<Productos> producto = articulosDAO.consultar(id);
-        if(!producto.isEmpty()){
-            jResp.success(req, resp, "Producto: ", producto);
-        }
-        else{
-            jResp.failed(req, resp, "El producto que buscas no exite", HttpServletResponse.SC_NOT_FOUND);
-        }
     }
 }

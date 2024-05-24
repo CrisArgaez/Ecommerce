@@ -55,7 +55,9 @@ public class carritoServlet extends HttpServlet {
         // Actualizar la cantidad de elementos del artículo en el carrito
         String pathInfo = req.getPathInfo();
         if (pathInfo != null && pathInfo.length() > 1) {
-            actualizarCantidadArticulo(req, resp);
+//            actualizarCantidadArticulo(req, resp);
+
+            // metodo aun en proceso
         }
     }
 
@@ -72,39 +74,46 @@ public class carritoServlet extends HttpServlet {
     }
 
     private void obtenerArticulosCarrito(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String[] idProductosStr = req.getParameterValues("idProductos");
-        List<Integer> idProductos = Arrays.stream(idProductosStr).map(Integer::parseInt).collect(Collectors.toList());
-        List<Productos> productos = carritoDAO.consultarPorIds(idProductos);
-        jResp.success(req, resp, "Listado de productos en el carrito: ", productos);
+        String pathInfo = req.getPathInfo();
+        int id = Integer.parseInt(pathInfo.substring(1));
+        Carrito carrito = carritoDAO.consultar(id);
+
+        if (carrito != null) {
+            jResp.success(req, resp, "Listado de productos en el carrito: ", carrito);
+        } else {
+            jResp.failed(req, resp, "No se encontró ningún carrito para el ID especificado.",404);
+        }
     }
 
+
     private void realizarCompra(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String pathInfo = req.getPathInfo();
         int cantidad = Integer.parseInt(req.getParameter("existencia"));
         if(cantidad > 0) {
             jResp.success(req, resp, "Compra realizada con éxito.", "");
-            actualizarCantidadArticulo(req, resp);
+
+            // metodo aun creandose
+
+//            actualizarCantidadArticulo(req, resp);
         }
     }
 
-    private void actualizarCantidadArticulo(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String pathInfo = req.getPathInfo();
-        int idProducto = Integer.parseInt(pathInfo.substring(1));
-        int nuevaCantidad = Integer.parseInt(req.getParameter("existencia"));
-
-        int filasActualizadas = carritoDAO.actualizarCantidad(idProducto, nuevaCantidad);
-        if (filasActualizadas > 0) {
-            jResp.success(req, resp, "Cantidad actualizada con éxito.", nuevaCantidad);
-        }
-    }
+//    private void actualizarCantidadArticulo(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+//        String pathInfo = req.getPathInfo();
+//        int idProducto = Integer.parseInt(pathInfo.substring(1));
+//        int nuevaCantidad = Integer.parseInt(req.getParameter("existencia"));
+//
+//        int filasActualizadas = carritoDAO.actualizar(idProducto, nuevaCantidad);
+//        if (filasActualizadas > 0) {
+//            jResp.success(req, resp, "Cantidad actualizada con éxito.", nuevaCantidad);
+//        }
+//    }
 
 
 
     private void eliminarArticuloCarrito(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String pathInfo = req.getPathInfo();
         int idProducto = Integer.parseInt(pathInfo.substring(1));
-
-        int filasEliminadas = carritoDAO.eliminarProductoCarrito(idProducto);
+        int filasEliminadas = carritoDAO.eliminar(idProducto);
         if (filasEliminadas > 0) {
             jResp.success(req, resp, "Producto eliminado con éxito.", "");
 

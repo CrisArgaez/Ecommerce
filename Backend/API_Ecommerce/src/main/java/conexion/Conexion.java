@@ -20,7 +20,7 @@ public final class Conexion<T> {
         url = "jdbc:mysql://" + host + ":" + puerto + "/" + bd;
     }
 
-    public boolean abrir () {
+    public boolean abrir() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conexion = DriverManager.getConnection(url, usuario, password);
@@ -47,7 +47,7 @@ public final class Conexion<T> {
         if (abrir()) {
             try {
                 PreparedStatement pst = this.conexion.prepareStatement(query);
-                if(params != null) {
+                if (params != null) {
                     for (int i = 0; i < params.length; i++) {
                         pst.setString(i + 1, params[i]);
                     }
@@ -58,13 +58,13 @@ public final class Conexion<T> {
                 int numColumnas = metadata.getColumnCount();
                 String[] columnas = new String[numColumnas];
                 for (int i = 1; i <= numColumnas; i++) {
-                    columnas[i-1] = metadata.getColumnName(i);
+                    columnas[i - 1] = metadata.getColumnName(i);
                 }
 
                 ArrayList<ArrayList<String>> registros = new ArrayList<ArrayList<String>>();
                 while (rs.next()) {
                     ArrayList<String> registro = new ArrayList<String>();
-                    for (String columna: columnas) {
+                    for (String columna : columnas) {
                         registro.add(rs.getString(columna));
                     }
                     registros.add(registro);
@@ -81,13 +81,13 @@ public final class Conexion<T> {
         return null;
     }
 
-    public int ejecutarActualizacion (String query, Object[] values) {
+    public int ejecutarActualizacion(String query, Object[] values) {
         if (this.abrir()) {
             try {
                 PreparedStatement pstm = this.conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 int index = 1;
 
-                for (Object val: values) {
+                for (Object val : values) {
                     switch (val.getClass().getName()) {
                         case "java.lang.Integer":
                             pstm.setInt(index, (Integer) val);
@@ -114,8 +114,8 @@ public final class Conexion<T> {
         return -1; // Devuelve -1 si no se pudo insertar el registro
     }
 
-
-    public boolean verificacionConsulta(String query, String param) {
+}
+   /* public boolean verificacionConsulta(String query, String param) {
         try {
             if (conexion == null) {
                 abrir();
@@ -134,9 +134,9 @@ public final class Conexion<T> {
 
         // Si llegamos a este punto, significa que no se encontró ninguna coincidencia
         return false;
-    }
+    }*/
 
-    public ResultSet consultarCredenciales(String query, String param) {
+    /*public ResultSet consultarCredenciales(String query, String param) {
         ResultSet rs = null;
         try {
             if (conexion == null) {
@@ -157,4 +157,4 @@ public final class Conexion<T> {
         // Si llegamos a este punto, significa que no se encontró ninguna coincidencia
         return null;
     }
-}
+}*/
