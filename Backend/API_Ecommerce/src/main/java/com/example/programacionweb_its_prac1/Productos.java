@@ -11,6 +11,13 @@ public class Productos {
 
     private String galeriaFotos;
 
+<<<<<<< HEAD
+=======
+    public Productos() {
+        // Constructor vacío
+    }
+
+>>>>>>> 1a4311bef9e3bbe28d0a4fbc553ae8c706e9e244
     public Productos(int id, String nombre, String urlImagen, String especificacion, String descripcion, int precio, int existencia, String galeriaFotos) {
         this.id = id;
         this.nombre = nombre;
@@ -86,4 +93,3 @@ public class Productos {
         this.galeriaFotos = galeriaFotos;
     }
 }
-

@@ -1,7 +1,10 @@
 package dao;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1a4311bef9e3bbe28d0a4fbc553ae8c706e9e244
 
 import com.example.programacionweb_its_prac1.Carrito;
 import conexion.Conexion;
@@ -36,24 +39,30 @@ public class CarritoDAO implements DAOGeneral<Integer,Carrito,String>{
     }
 
     @Override
+<<<<<<< HEAD
     public Carrito consultar(Integer id) {
         String query = "SELECT id_carrito, id_producto, id_usuario FROM carrito_de_compras WHERE id_usuario = ?";
         ArrayList<String> parametros = new ArrayList<>();
         parametros.add(id.toString());
         ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, parametros.toArray(new String[0]));
+=======
+    public ArrayList<Carrito> consultar(Integer id) {
+        String query = "SELECT id_producto FROM carrito_de_compras WHERE id_usuario = ?";
+        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, new String[]{id.toString()});
+        ArrayList<Carrito> productos = new ArrayList<>();
+>>>>>>> 1a4311bef9e3bbe28d0a4fbc553ae8c706e9e244
 
         if (registros.isEmpty()) {
-
             return null;
+        }else{
+            for (ArrayList<String> registro : registros) {
+                int productoId = Integer.parseInt(registro.get(0));
+
+                Carrito carrito = new Carrito(0, 0, productoId);
+                productos.add(carrito);
+            }
+            return productos;
         }
-
-        ArrayList<String> registro = registros.get(0);
-        int carritoId = Integer.parseInt(registro.get(0));
-        int productoId = Integer.parseInt(registro.get(1));
-        int usuarioId = Integer.parseInt(registro.get(2));
-
-        Carrito carrito = new Carrito(carritoId, productoId, usuarioId);
-        return carrito;
     }
 
 
@@ -75,6 +84,7 @@ public class CarritoDAO implements DAOGeneral<Integer,Carrito,String>{
         String query = "DELETE FROM carrito_de_compras WHERE id_producto = ? AND id_usuario= ?";
         return c.ejecutarActualizacion(query, new String[]{String.valueOf(id)});
 
+<<<<<<< HEAD
     }
 
     @Override
@@ -85,6 +95,7 @@ public class CarritoDAO implements DAOGeneral<Integer,Carrito,String>{
     @Override
     public int actualizarExistencia(Integer id, int nuevaCantidad) {
         return 0;
+=======
+>>>>>>> 1a4311bef9e3bbe28d0a4fbc553ae8c706e9e244
     }
 }
-
