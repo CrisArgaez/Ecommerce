@@ -71,11 +71,17 @@ public class carritoServlet extends HttpServlet {
         addCorsHeaders(resp);
         resp.setContentType("application/json");
 
-        // Eliminar un artículo del carrito
+        //Obtener el id del articulo por eliminar
         String pathInfo = req.getPathInfo();
-        if (pathInfo != null && pathInfo.length() > 1) {
-            eliminarArticuloCarrito(req, resp);
-        }
+        int idProducto = Integer.parseInt(pathInfo.substring(1));
+
+        //Determinar a quien le pertenece el id por medio del body de la peticion
+        Gson gson = new Gson();
+        Carrito productoRequest = gson.fromJson(req.getReader(), Carrito.class);
+        Integer idUsuario = productoRequest.getIdUsuario();//Me devolvera el id que pase en el cuerpo de la peticion DELETE
+
+        //Proceso de eliminacion
+        eliminarArticuloCarrito(req, resp, idUsuario, idProducto);
     }
 
     private void obtenerArticulosCarrito(HttpServletRequest req, HttpServletResponse resp, Integer id) throws IOException {
@@ -114,13 +120,14 @@ public class carritoServlet extends HttpServlet {
 
 
 
-    private void eliminarArticuloCarrito(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String pathInfo = req.getPathInfo();
-        int idProducto = Integer.parseInt(pathInfo.substring(1));
-        int filasEliminadas = carritoDAO.eliminar(idProducto);
+    private void eliminarArticuloCarrito(HttpServletRequest req, HttpServletResponse resp, Integer idUsuario, Integer idProducto) throws IOException {
+        CarritoDAO carritodao = new CarritoDAO();
+        int filasEliminadas = carritodao.eliminar(idUsuario, idProducto);
         if (filasEliminadas > 0) {
             jResp.success(req, resp, "Producto eliminado con éxito.", "");
-
+        }else{
+            jResp.failed(req, resp, "No se encontró ningún carrito con el ID del artículo que desea eliminar.",404);
         }
     }
 }
+

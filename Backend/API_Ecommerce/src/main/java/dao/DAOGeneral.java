@@ -15,5 +15,5 @@ public interface DAOGeneral<K, T, S> {
 
     public int actualizar(K id, T elemento);
 
-    public int eliminar(K id);
+    public int eliminar(K id_Usuario, K id_Producto);
 }

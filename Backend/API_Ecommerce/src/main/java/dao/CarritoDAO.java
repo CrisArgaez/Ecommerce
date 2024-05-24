@@ -69,9 +69,10 @@ public class CarritoDAO implements DAOGeneral<Integer,Carrito,String>{
 
 
     @Override
-    public int eliminar(Integer id) {
-        String query = "DELETE FROM carrito_de_compras WHERE id_producto = ? AND i= ";
-        return c.ejecutarActualizacion(query, new String[]{String.valueOf(id)});
-
+    public int eliminar(Integer idUsuario, Integer idProducto) {
+        String query = "DELETE FROM carrito_de_compras WHERE id_usuario = ? AND id_producto = ?";
+        return c.ejecutarActualizacion(query, new String[]{String.valueOf(idUsuario), String.valueOf(idProducto)});
     }
 }
+
+
