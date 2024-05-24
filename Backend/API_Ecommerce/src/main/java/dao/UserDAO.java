@@ -43,7 +43,7 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
     }
 
     @Override
-    public int eliminar(Integer id) {
+    public int eliminar(Integer id, Integer id2) {
         return 0;
     }
 

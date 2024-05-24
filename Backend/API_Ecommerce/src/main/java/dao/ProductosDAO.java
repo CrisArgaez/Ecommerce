@@ -77,7 +77,7 @@ public class ProductosDAO implements DAOGeneral<Integer, Productos, String> {
     }
 
     @Override
-    public int eliminar(Integer id) {
+    public int eliminar(Integer id, Integer id2) {
         return 0;
     }
 }

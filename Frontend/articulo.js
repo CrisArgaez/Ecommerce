@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.log("Este producto tiene el id:", id)
 
         const apiUrl = `http://localhost:8080/api/articulos/${id}`;
+        console.log(apiUrl)
 
         const response = await fetch(apiUrl, {
             method: 'GET',
@@ -21,11 +22,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
 
         const responseData = await response.json();
-        console.log(responseData.message) //Imprimir el valor del json "message"
-        console.log(response)
-
-        
-
+        console.log(responseData.data) //Imprimir el valor del json "message"
     } catch (error) {
         console.error('Hubo un error al obtener los datos del producto:', error);
     }

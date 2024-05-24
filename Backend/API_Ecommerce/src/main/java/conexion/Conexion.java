@@ -81,13 +81,13 @@ public final class Conexion<T> {
         return null;
     }
 
-    public int ejecutarActualizacion (String query, Object[] values) {
+    public int ejecutarActualizacion(String query, Object[] values) {
         if (this.abrir()) {
             try {
-                PreparedStatement pstm = this.conexion.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement pstm = this.conexion.prepareStatement(query);
                 int index = 1;
 
-                for (Object val: values) {
+                for (Object val : values) {
                     switch (val.getClass().getName()) {
                         case "java.lang.Integer":
                             pstm.setInt(index, (Integer) val);
@@ -99,21 +99,17 @@ public final class Conexion<T> {
                     index++;
                 }
 
-                pstm.executeUpdate();
-                ResultSet rs = pstm.getGeneratedKeys();
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
+                int filasAfectadas = pstm.executeUpdate();
+                cerrar(); // Cierra la conexión aquí o en un bloque finally
+
+                return filasAfectadas; // Devuelve la cantidad de filas afectadas
             } catch (SQLException e) {
                 throw new RuntimeException(e);
-            } finally {
-                cerrar();
             }
         }
 
         return -1; // Devuelve -1 si no se pudo insertar el registro
     }
-
 
     public boolean verificacionConsulta(String query, String param) {
         try {
