@@ -1,11 +1,13 @@
 package com.example.programacionweb_its_prac1;
 
+import com.google.gson.Gson;
 import dao.CarritoDAO;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,9 +36,12 @@ public class carritoServlet extends HttpServlet {
         addCorsHeaders(resp);
         resp.setContentType("application/json");
 
-        if (req.getPathInfo().equals("/")) {
-            obtenerArticulosCarrito(req, resp);
-        }
+        Gson gson = new Gson();
+
+        Carrito productoRequest = gson.fromJson(req.getReader(), Carrito.class);
+
+        Integer idUsuario = productoRequest.getIdUsuario();//Me devolvera el id que pase en el cuerpo de la peticion PUT
+        obtenerArticulosCarrito(req, resp, idUsuario);
     }
 
     @Override
@@ -73,13 +78,12 @@ public class carritoServlet extends HttpServlet {
         }
     }
 
-    private void obtenerArticulosCarrito(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String pathInfo = req.getPathInfo();
-        int id = Integer.parseInt(pathInfo.substring(1));
-        Carrito carrito = carritoDAO.consultar(id);
+    private void obtenerArticulosCarrito(HttpServletRequest req, HttpServletResponse resp, Integer id) throws IOException {
+        CarritoDAO carritodao = new CarritoDAO();
+        ArrayList<Carrito> carrito = carritodao.consultar(id);
 
         if (carrito != null) {
-            jResp.success(req, resp, "Listado de productos en el carrito: ", carrito);
+            jResp.success(req, resp, "Listado de productos en el carrito del usuario " + id + ": ", carrito);
         } else {
             jResp.failed(req, resp, "No se encontró ningún carrito para el ID especificado.",404);
         }
@@ -120,4 +124,3 @@ public class carritoServlet extends HttpServlet {
         }
     }
 }
-

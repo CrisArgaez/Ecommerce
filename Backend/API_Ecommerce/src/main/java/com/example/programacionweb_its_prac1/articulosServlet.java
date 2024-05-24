@@ -34,7 +34,14 @@ public class articulosServlet extends HttpServlet{
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         addCorsHeaders(resp);
         resp.setContentType("application/json");
-        obtenerArticulos(req, resp);
+        String pathInfo = req.getPathInfo();
+        if (pathInfo != null) {
+            String idString = pathInfo.substring(1);
+            int id = Integer.parseInt(idString);
+            obtenerArticuloEspecifico(req, resp, id);
+        }else{
+            obtenerArticulos(req, resp);
+        }
     }
 
     @Override
@@ -68,8 +75,6 @@ public class articulosServlet extends HttpServlet{
         List<Productos> productos = articulosDAO.consultar();
         jResp.success(req, resp, "Listado de productos: ", productos);
     }
-<<<<<<< HEAD
-=======
 
     private void obtenerArticuloEspecifico(HttpServletRequest req, HttpServletResponse resp, Integer id) throws IOException {
         ProductosDAO articulosDAO = new ProductosDAO();
@@ -91,5 +96,4 @@ public class articulosServlet extends HttpServlet{
             jResp.failed(req, resp, "No se ha podido guardar el producto", HttpServletResponse.SC_NOT_FOUND);
         }
     }
->>>>>>> c4a152a1f5d7406dae122e6723e8e8c79324f9cd
 }

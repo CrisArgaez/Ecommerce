@@ -18,7 +18,6 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
     }
 
     public int agregar(User user) {
-        // Asegúrate de que los campos coincidan con los de la tabla users en la base de datos
         String query = "INSERT INTO users (nombre, apellidos, correoelectronico, pass) VALUES (?, ?, ?, ?)";
         return c.ejecutarActualizacion(query, new String[]{user.getNombres(), user.getApellidos(), user.getCorreoelectronico(), user.getPassword()});
     }
@@ -34,7 +33,7 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
     }
 
     @Override
-    public User consultar(Integer id) {
+    public ArrayList<User> consultar(Integer id) {
         return null;
     }
 

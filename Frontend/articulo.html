@@ -32,24 +32,26 @@
         <h2 class="section-title">Detalles del producto </h2>
         <div class="row mt-5">
             <div class="col-lg-5 col-md-12 col-12">
-                <img class="img-fluid w-100 pb-1" id="imagen-principal" alt="">
+                <img class="img-fluid w-100 pb-1" src="" alt="" id="MainImg">
 
-                <div class="small-img-group" id="galeria-imagenes">
-                    <!--Aqui se deberia crear el elemento img para la imagen del articulo y el elemento img para la imagen de la galería-->
+                <div class="small-img-group">
+                    <!--Aqui se colocarán las imagenes de los articulos dinamicamente desde el javascript-->
                 </div>
+
             </div>  
 
             <div class="col-lg-6 col-md-12 col-12">
                 <h3 id="nombre-producto"></h3>
                 <h2 id="precio-producto"></h2>
-                <h5 id="especificaciones-producto"></h5>
+
+                <h4 class="mt-4 mb-2"> Especificaciones del producto: </h5>
+                <ul id="especificaciones-producto"></ul>
+
                 <h4 id="cantidad-disponible"></h4>
-                
+
                 <button class="buy-btn "> Añadir al carrito</button>
-                <h4 class="mt-5 mb-3"> Descripción del producto</h4>
-                <span> 
-                    <p id="descripción-producto"></p>
-                </span>
+                <h4 class="mt-5 mb-3"> Descripción del producto </h4>
+                <span id="descripción-producto"> </span>
 
             </div>
         </div>
