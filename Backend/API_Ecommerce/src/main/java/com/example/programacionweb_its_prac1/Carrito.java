@@ -36,5 +36,9 @@ public class Carrito {
     public void setIdProducto(int idProducto) {
         this.idProducto = idProducto;
     }
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> d3955a8d84b321827b442ca03e5ef88f8f0519e7
