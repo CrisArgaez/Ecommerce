@@ -16,9 +16,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
 
         const responseData = await response.json();
-<<<<<<< HEAD
         console.log(responseData.data) //Imprimir el valor del json "message"
-=======
+
         //console.log(responseData.data) //Imprimir el valor del json "message"
         const articulo = responseData.data[0];
 
@@ -77,29 +76,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
         
     
->>>>>>> d3955a8d84b321827b442ca03e5ef88f8f0519e7
     } catch (error) {
         console.error('Hubo un error al obtener los datos del producto:', error);
     }
 });
-
-/*
-//Cambio de imagen
-var MainImg = document.getElementById("MainImg");
-var smallimg = document.getElementsByClassName("small-img");
-
-smallimg[0].onclick = function() {
-    MainImg.src = smallimg[0].src;  
-}
-
-smallimg[1].onclick = function() {
-    MainImg.src = smallimg[1].src;  
-}
-
-smallimg[2].onclick = function() {
-    MainImg.src = smallimg[2].src;  
-}
-
-smallimg[3].onclick = function() {
-    MainImg.src = smallimg[3].src;  
-}*/

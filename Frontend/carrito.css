@@ -81,13 +81,13 @@ header{
 /*contenedor de la carta*/
 .cart{
 
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
-    position: center;
+   /* position: center; */
     padding: 20px;
     background: var(--bg-color);
     box-shadow: -2px 0 4px hsl(0 4% 15% / 10%);
-    transition: 0.3s;
 }
 
 .cart-title{
@@ -117,7 +117,7 @@ header{
 }
 
 .card-product-title{
-    font-size: 2.5rem; 
+    font-size: 1rem; 
     text-transform: uppercase;
 }
 
@@ -129,13 +129,11 @@ header{
     border: 1px solid var(--text-color);
     outline-color: var(--main-color);
     width: 2.4rem;
-    height: 2rem;
+    height: 2.4rem;
     text-align: center;
     font-size: 1rem;
     margin-right: 0.5rem;
 }
-
-
 
 .quantity-button {
     padding: 0.5rem 1rem;
@@ -145,7 +143,6 @@ header{
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
-    height: 2rem;
 }
 
 .quantity-button:hover {
