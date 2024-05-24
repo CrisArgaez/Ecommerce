@@ -3,7 +3,6 @@ package com.example.programacionweb_its_prac1;
 public class User {
     private Integer id;
     private String nombres;
-
     private String apellidos;
     private String correoelectronico;
     private String password;

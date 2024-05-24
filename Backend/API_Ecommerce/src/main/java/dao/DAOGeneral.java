@@ -16,4 +16,9 @@ public interface DAOGeneral<K, T, S> {
     public int actualizar(K id, T elemento);
 
     public int eliminar(K id);
+
+    public int consultarExistencia(K id);
+
+    public int actualizarExistencia(K id, int nuevaCantidad);
 }
+

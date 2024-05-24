@@ -23,7 +23,7 @@ public class ProductosDAO implements DAOGeneral<Integer,Productos,String>{
     }
 
     public ArrayList<Productos> consultar() {
-        String query = "SELECT id_producto, nombre, url_imagen, especificacion, descripcion, precio, existencia, galeriaFotos FROM productos";
+        String query = "SELECT id_producto, nombre, url_imagen, espeficicacion, descripcion, precio, existencia, galeriaFotos FROM productos";
         ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, null);
         ArrayList<Productos> productos = new ArrayList<>();
         for (ArrayList<String> registro : registros) {
@@ -43,9 +43,8 @@ public class ProductosDAO implements DAOGeneral<Integer,Productos,String>{
     }
 
     @Override
-    public Productos consultar(Integer id) {
-        return null;
-    }
+    public Productos consultar(Integer id) {return null;}
+
 
     @Override
     public Productos consultarCorreo(String correo) {
@@ -57,9 +56,32 @@ public class ProductosDAO implements DAOGeneral<Integer,Productos,String>{
         return 0;
     }
 
+
+
     @Override
     public int eliminar(Integer id) {
         return 0;
+    }
+
+    @Override
+    public int consultarExistencia(Integer id) {
+        String query = "SELECT existencia FROM productos WHERE id_producto = ?";
+        ArrayList<String> parametros = new ArrayList<>();
+        parametros.add(String.valueOf(id));
+
+        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, parametros.toArray(new String[0]));
+
+        if (registros.size() == 0) {
+            return -1;
+        }
+        String existenciaStr = registros.get(0).get(0);
+        return Integer.parseInt(existenciaStr);
+    }
+
+    @Override
+    public int actualizarExistencia(Integer id, int nuevaCantidad) {
+        String query = "UPDATE productos SET existencia = ? WHERE id_producto = ?";
+        return c.ejecutarActualizacion(query, new String[]{String.valueOf(nuevaCantidad), String.valueOf(id)});
     }
 }
 

@@ -6,12 +6,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 @WebServlet("/articulos/*")
 public class articulosServlet extends HttpServlet{
@@ -68,19 +65,6 @@ public class articulosServlet extends HttpServlet{
         List<Productos> productos = articulosDAO.consultar();
         jResp.success(req, resp, "Listado de productos: ", productos);
     }
-<<<<<<< HEAD
-=======
-
-    private void obtenerArticuloEspecifico(HttpServletRequest req, HttpServletResponse resp, Integer id) throws IOException {
-        ProductosDAO articulosDAO = new ProductosDAO();
-        List<Productos> producto = articulosDAO.consultar(id);
-        if(!producto.isEmpty()){
-            jResp.success(req, resp, "Producto: ", producto);
-        }
-        else{
-            jResp.failed(req, resp, "El producto que buscas no existe", HttpServletResponse.SC_NOT_FOUND);
-        }
-    }
 
     private void agregarProducto(HttpServletRequest req, HttpServletResponse resp, Integer id_Usuario, Integer id_Producto) throws IOException {
         ProductosDAO articulosDAO = new ProductosDAO();
@@ -91,5 +75,5 @@ public class articulosServlet extends HttpServlet{
             jResp.failed(req, resp, "No se ha podido guardar el producto", HttpServletResponse.SC_NOT_FOUND);
         }
     }
->>>>>>> c4a152a1f5d7406dae122e6723e8e8c79324f9cd
+
 }

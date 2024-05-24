@@ -11,10 +11,6 @@ public class Productos {
 
     private String galeriaFotos;
 
-    /*public Productos() {
-        // Constructor vacío
-    }*/
-
     public Productos(int id, String nombre, String urlImagen, String especificacion, String descripcion, int precio, int existencia, String galeriaFotos) {
         this.id = id;
         this.nombre = nombre;

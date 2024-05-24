@@ -1,11 +1,9 @@
 package dao;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 import com.example.programacionweb_its_prac1.Carrito;
-import com.example.programacionweb_its_prac1.Productos;
 import conexion.Conexion;
 
 //CarritoDAO contiene:
@@ -13,13 +11,10 @@ import conexion.Conexion;
 //eliminarProductoCarrito -> Usuario elimina producto del carrito
 //actualizarCantidad -> Actualizar existencias al realizar compras
 
-<<<<<<< HEAD
+
 public class CarritoDAO implements DAOGeneral<Integer,Carrito,String>{
     private final Conexion c;
-=======
-public class CarritoDAO {
-    private final Conexion<Productos> conexion;
->>>>>>> c4a152a1f5d7406dae122e6723e8e8c79324f9cd
+
 
     public CarritoDAO() {
         c = new Conexion<Carrito>();
@@ -31,16 +26,21 @@ public class CarritoDAO {
     }
 
     @Override
+    public int agregarArticuloCarrito(Integer id_Usuario, Integer id_Producto) {
+        return 0;
+    }
+
+    @Override
     public ArrayList<Carrito> consultar() {
         return null;
     }
 
     @Override
     public Carrito consultar(Integer id) {
-        String query = "SELECT id_carrito, id_producto, id_usuario FROM productos WHERE id_producto = ?";
+        String query = "SELECT id_carrito, id_producto, id_usuario FROM carrito_de_compras WHERE id_usuario = ?";
         ArrayList<String> parametros = new ArrayList<>();
         parametros.add(id.toString());
-        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, null);
+        ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, parametros.toArray(new String[0]));
 
         if (registros.isEmpty()) {
 
@@ -69,21 +69,22 @@ public class CarritoDAO {
         return 0;
     }
 
-<<<<<<< HEAD
+
     @Override
     public int eliminar(Integer id) {
-        String query = "DELETE FROM carrito_de_compras WHERE id_producto = ? AND i= ";
+        String query = "DELETE FROM carrito_de_compras WHERE id_producto = ? AND id_usuario= ?";
         return c.ejecutarActualizacion(query, new String[]{String.valueOf(id)});
-=======
-    private Productos convertirRegistroAProducto(ArrayList<String> registro) {
-        int id = Integer.parseInt(registro.get(0));
-        String nombre = registro.get(1);
-        String descripcion = registro.get(2);
-        int precio = Integer.parseInt(registro.get(3));
-        int existencia = Integer.parseInt(registro.get(4));
 
-        return null;//new Productos(id, nombre, "", "", descripcion, precio, existencia);
->>>>>>> c4a152a1f5d7406dae122e6723e8e8c79324f9cd
+    }
+
+    @Override
+    public int consultarExistencia(Integer id) {
+        return 0;
+    }
+
+    @Override
+    public int actualizarExistencia(Integer id, int nuevaCantidad) {
+        return 0;
     }
 }
 

@@ -48,6 +48,16 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
         return 0;
     }
 
+    @Override
+    public int consultarExistencia(Integer id) {
+        return 0;
+    }
+
+    @Override
+    public int actualizarExistencia(Integer id, int nuevaCantidad) {
+        return 0;
+    }
+
     public User consultarCorreo(String correo) {
         String query = "SELECT id, nombre, apellidos, correoelectronico, pass FROM users WHERE correoelectronico = ?";
         ArrayList<ArrayList<String>> registros = c.ejecutarConsulta(query, new String[]{correo});
