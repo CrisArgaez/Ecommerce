@@ -18,5 +18,4 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.error("Hubo un error al realizar la solicitud:", error);
     }
 
-
 });
