@@ -204,4 +204,8 @@ public class carritoServlet extends HttpServlet {
             jResp.failed(req, resp, "No se encontró ningún carrito con el ID del artículo que desea actualizar.",404);
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 9032e6b503b1ca91e0fe619c863d1508c06cc57b
