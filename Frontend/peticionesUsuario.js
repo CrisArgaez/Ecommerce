@@ -36,12 +36,27 @@ if (currentUrl.includes("registro.html")) {
             if (response.ok) {
                 // La solicitud fue exitosa (código de estado 200)
                 const responseData = await response.json();
-                console.log("Usuario registrado correctamente");
+                response.json();
+                Swal.fire({
+                    title: '¡Éxito!',
+                    text: 'Usuario registrado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                 }).then((result) => {
+                    if (result.value) {
+                        window.location.href = 'acceder.html';
+                    }
+                });
             } else {
                 // La solicitud no fue exitosa
                 console.error("Error al registrar el usuario. Código de estado:", response.status);
                 const errorMessage = await response.text();
-                console.error("Mensaje de error:", errorMessage);
+                Swal.fire({
+                    title: 'Error',
+                    text: `Error al registrar el usuario. Código de estado: ${response.status}`,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
             }
         } catch (error) {
             console.error("Hubo un error al realizar la solicitud:", error);
@@ -78,7 +93,14 @@ if (currentUrl.includes("registro.html")) {
             });
 
             const responseData = await response.json();
-            console.log(responseData.message)//Imprimir el valor del json "message"
+            localStorage.setItem('userId', responseData.userId);
+            Swal.fire({
+                title: '¡Bienvenido!',
+                text: "Sesión iniciada correctamente",
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+
 
         } catch (error) {
             console.error("Hubo un error al realizar la solicitud:", error);

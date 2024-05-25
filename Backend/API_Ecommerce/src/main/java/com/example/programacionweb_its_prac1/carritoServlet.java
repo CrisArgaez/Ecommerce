@@ -205,5 +205,3 @@ public class carritoServlet extends HttpServlet {
         }
     }
 }
-
-.Integer
