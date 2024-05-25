@@ -40,9 +40,18 @@ public class carritoServlet extends HttpServlet {
 
         Carrito productoRequest = gson.fromJson(req.getReader(), Carrito.class);
 
-        Integer idUsuario = productoRequest.getIdUsuario();//Me devolvera el id que pase en el cuerpo de la peticion PUT
-        obtenerArticulosCarrito(req, resp, idUsuario);
+        // Obtener el valor del parámetro "idUsuario" de la URL
+        String idUsuarioParametro = req.getParameter("idUsuario");
+
+        if (idUsuarioParametro != null) {
+            Integer idUsuario = Integer.parseInt(idUsuarioParametro);
+            obtenerArticulosCarrito(req, resp, idUsuario);
+        } else {
+            // Manejar el caso en el que no se proporciona el parámetro "idUsuario"
+            // Puedes enviar una respuesta de error o realizar otra acción apropiada.
+        }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
