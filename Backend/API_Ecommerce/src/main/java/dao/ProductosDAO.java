@@ -82,6 +82,18 @@ public class ProductosDAO implements DAOGeneral<Integer, Productos, String> {
     }
 
     @Override
+    public int verificarRepetido(Integer id_Usuario, Integer id_Producto) {
+        String query = "SELECT id_producto FROM carrito_de_compras WHERE id_usuario = ? AND id_Producto = ?";
+        ArrayList<ArrayList<String>> registros =  c.ejecutarConsulta(query, new String[]{String.valueOf(id_Usuario), String.valueOf(id_Producto)});
+
+        if(registros.isEmpty()) {
+            return 0;
+        }else{
+            return 1;
+        }
+    }
+
+    @Override
     public int consultarExistencia(Integer id) {
         String query = "SELECT existencia FROM productos WHERE id_producto = ?";
         ArrayList<String> parametros = new ArrayList<>();

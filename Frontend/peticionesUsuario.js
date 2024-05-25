@@ -93,7 +93,15 @@ if (currentUrl.includes("registro.html")) {
             });
 
             const responseData = await response.json();
-            localStorage.setItem('userId', responseData.userId);
+
+            console.log(responseData.message)
+
+            const usuario = parseInt(responseData.message);
+            console.log(responseData.message)
+            if (response.ok) {
+                // La solicitud fue exitosa (código de estado 200)
+               localStorage.setItem('userId', usuario);
+               
             Swal.fire({
                 title: '¡Bienvenido!',
                 text: "Sesión iniciada correctamente",
@@ -101,7 +109,16 @@ if (currentUrl.includes("registro.html")) {
                 confirmButtonText: 'Aceptar'
             });
 
-
+            } else {
+                // La solicitud no fue exitosa
+                console.error("Error al registrar el usuario. Código de estado:", response.status);
+                Swal.fire({
+                    title: 'Error',
+                    text: `Error al registrar el usuario. Código de estado: ${response.status}`,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+            }
         } catch (error) {
             console.error("Hubo un error al realizar la solicitud:", error);
         }

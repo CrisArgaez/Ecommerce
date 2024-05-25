@@ -51,8 +51,26 @@ document.addEventListener('DOMContentLoaded', async function() {
             botonCarrito.addEventListener("click", () => {
                 event.stopPropagation(); // Evitar que se active el evento click de la tarjeta
                 //console.log("Agregado al carrito:", producto);
+                if(responseData.data.existencia == 0){
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'El producto no se encuentra disponible',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    botonCarrito.disable = true;
+                }
+                else{
+                    Swal.fire({
+                        title: '¡Agregado al carrito!',
+                        text: 'El producto ha sido agregado al carrito',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    });
                 const idProducto = producto.id;
                 agregarAlCarrito(idProducto);
+                }
+                
             });
   
             
@@ -60,9 +78,26 @@ document.addEventListener('DOMContentLoaded', async function() {
 
          async function agregarAlCarrito(producto) {
             try{
+
+                const userId = localStorage.getItem('userId');
+                console.log("El usuario actual es : " + userId)
+
+                    if(userId == null || userId == 0){
+                        swal.fire({
+                            title: 'Error',
+                            text: 'Debe iniciar sesión',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        }).then((result) => {
+                            if (result.value) {
+                                window.location.href = 'acceder.html';
+                            }
+                        });
+                    }
+                    else{
                 const url = `http://localhost:8080/api/articulos/${producto}`;
                 const data ={
-                    id: 1,
+                    id: userId
                 };
         
                 const response = await fetch(url, {
@@ -75,6 +110,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         
                 const responseData = await response.json();
                 console.log(responseData.message)//Imprimir el valor del json "message"
+                }
             } catch (error) {
                 console.error("Hubo un error al realizar la solicitud:", error);
             }
@@ -87,18 +123,3 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.error("Hubo un error al realizar la solicitud:", error);
     }
   });
-
-
-
-  
-
-
-
-
-
-  /*function agregarAlCarrito(producto) {
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    carrito.push(producto);
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-  }*/
-

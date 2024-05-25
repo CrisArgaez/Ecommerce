@@ -48,6 +48,11 @@ public class UserDAO implements DAOGeneral<Integer, User, String> {
     }
 
     @Override
+    public int verificarRepetido(Integer id_Usuario, Integer id_Producto) {
+        return 0;
+    }
+
+    @Override
     public int consultarExistencia(Integer id) {
         return 0;
     }
