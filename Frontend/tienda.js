@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
          async function agregarAlCarrito(producto) {
             try{
-                const url = "http://localhost:8080/api/articulos/id";
+                const url = `http://localhost:8080/api/articulos/${producto};`
                 const data ={
                     id: 1,
                 };
