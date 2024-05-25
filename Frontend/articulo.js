@@ -76,6 +76,75 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
             });
         });
+
+
+        //Anadir el listener al icono de agregar al carrito
+        const botonCarrito = document.querySelector('.buy-btn');
+        botonCarrito.addEventListener('click', () => {
+            event.stopPropagation(); // Evitar que se active el evento click de la tarjeta
+                //console.log("Agregado al carrito:", producto);
+                if(responseData.data.existencia == 0){
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'El producto no se encuentra disponible',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    botonCarrito.disable = true;
+                }
+                else{
+                    Swal.fire({
+                        title: '¡Agregado al carrito!',
+                        text: 'El producto ha sido agregado al carrito',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    });
+                const idProducto = articulo.id;
+                agregarAlCarrito(idProducto);
+                }
+        });
+
+        //Anadir la funcion de agregar al carrito
+        async function agregarAlCarrito(producto) {
+            try{
+
+                const userId = localStorage.getItem('userId');
+                console.log(userId)
+
+                    if(userId == null || userId == 0){
+                        swal.fire({
+                            title: 'Error',
+                            text: 'Debe iniciar sesión',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        }).then((result) => {
+                            if (result.value) {
+                                window.location.href = 'acceder.html';
+                            }
+                        });
+                    }
+                    else{
+                const url = `http://localhost:8080/api/articulos/${producto}`;
+                const data ={
+                    id: userId
+                };
+        
+                const response = await fetch(url, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+        
+                const responseData = await response.json();
+                console.log(responseData.message)//Imprimir el valor del json "message"
+                }
+            } catch (error) {
+                console.error("Hubo un error al realizar la solicitud:", error);
+            }
+        
+          }
         
 
     } catch (error) {
