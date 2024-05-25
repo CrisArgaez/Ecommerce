@@ -14,8 +14,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
 
 @WebServlet("/login/*")
 public class loginServlet extends HttpServlet {
@@ -74,8 +73,11 @@ public class loginServlet extends HttpServlet {
                         .signWith(generalKey())
                         .compact();
 
-                jResp.success(req, resp, "Usuario " + InformacionUsuario.getNombres() + " " + InformacionUsuario.getApellidos() +" encontrado y autenticado, ¡Bienvenido!", token);
+
+
+                jResp.success(req, resp, "Usuario " + InformacionUsuario.getNombres() + " " + InformacionUsuario.getApellidos() +" "+ InformacionUsuario.getId()+ " encontrado y autenticado, ¡Bienvenido!", token);
                 return;
+
             }
         }
         jResp.failed(req, resp, "Nombre de usuario o contraseña inválidos", HttpServletResponse.SC_UNAUTHORIZED);

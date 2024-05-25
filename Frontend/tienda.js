@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
          async function agregarAlCarrito(producto) {
             try{
-                const url = `http://localhost:8080/api/articulos/${producto};`
+                const url = `http://localhost:8080/api/articulos/${producto}`;
                 const data ={
                     id: 1,
                 };
@@ -80,12 +80,15 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
         
           }
+          
         
       
     } catch (error) {
         console.error("Hubo un error al realizar la solicitud:", error);
     }
   });
+
+
 
   
 
