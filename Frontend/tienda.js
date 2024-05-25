@@ -50,16 +50,52 @@ document.addEventListener('DOMContentLoaded', async function() {
             //Agregar el listener al icono de agregar al carrito
             botonCarrito.addEventListener("click", () => {
                 event.stopPropagation(); // Evitar que se active el evento click de la tarjeta
-                console.log("Agregado al carrito:", producto);
+                //console.log("Agregado al carrito:", producto);
+                const idProducto = producto.id;
+                agregarAlCarrito(idProducto);
             });
   
             
           });
+
+         async function agregarAlCarrito(producto) {
+            try{
+                const url = "http://localhost:8080/api/articulos/id";
+                const data ={
+                    id: 1,
+                };
+        
+                const response = await fetch(url, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+        
+                const responseData = await response.json();
+                console.log(responseData.message)//Imprimir el valor del json "message"
+            } catch (error) {
+                console.error("Hubo un error al realizar la solicitud:", error);
+            }
+        
+          }
+        
       
-  
     } catch (error) {
         console.error("Hubo un error al realizar la solicitud:", error);
     }
   });
 
+  
+
+
+
+
+
+  /*function agregarAlCarrito(producto) {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    carrito.push(producto);
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+  }*/
 
