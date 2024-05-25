@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async function() {
     try{
-        const url = "http://localhost:8080/api/carrito";
+        const url = "http://localhost:8080/api/carrito?idUsuario=1";
   
         const response = await fetch(url, {
             method: "GET",
