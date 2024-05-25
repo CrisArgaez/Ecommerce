@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 const userId = localStorage.getItem('userId');
                 console.log("El usuario actual es : " + userId)
 
+
                     if(userId == null || userId == 0){
                         swal.fire({
                             title: 'Error',

@@ -1,6 +1,23 @@
 document.addEventListener('DOMContentLoaded', async function() {
+    const usuario = localStorage.getItem('userId');
+    console.log("El usuario es: " + usuario);
+    
+    if (usuario == null || usuario == 0) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Debe iniciar sesión',
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        }).then((result) => {
+            if (result.value) {
+                window.location.href = 'acceder.html';
+            }
+        });
+        return; // Termina la ejecución si el usuario no está definido
+    }
+
     try {
-        const urlCarrito = "http://localhost:8080/api/carrito?idUsuario=1";
+        const urlCarrito = `http://localhost:8080/api/carrito?idUsuario=${usuario}`;
         const responseCarrito = await fetch(urlCarrito, {
             method: "GET",
             headers: {
@@ -10,34 +27,24 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         const carritoData = await responseCarrito.json();
         console.log(carritoData.message);
+        const numeroProductos = carritoData.data.length;
+        const listaProductos = carritoData.data.map(item => item.idProducto);
+        const respuesta = listaProductos.map(idProducto => ({
+            idUsuario: usuario,
+            idProducto,
+            cantidadComprada: "2"
+        }));
 
-        var numeroProductos = carritoData.data.length
-        var listaProductos = []
-
-        for(var i = 0; i<numeroProductos; i++){
-            listaProductos.push(carritoData.data[i].idProducto)
-        }
-
-        var respuesta = []
-
-        for (let i = 0; i < numeroProductos; i++) {
-            const objeto = {
-                idUsuario: "1",
-                idProducto: listaProductos[i],
-                cantidadComprada: "2"
-            };
-            respuesta.push(objeto);
-        }
-
-        console.log(respuesta)
-
-        const numeroArticulos = carritoData.data.length;
-        const listaArticulos = carritoData.data.map(item => item.idProducto);
+        console.log(respuesta);
 
         const cartContent = document.querySelector('.cart-content');
+        if (!cartContent) {
+            console.error('El elemento .cart-content no se encontró en el DOM.');
+            return;
+        }
         cartContent.innerHTML = ''; // Clear existing content
 
-        for (const idProducto of listaArticulos) {
+        for (const idProducto of listaProductos) {
             try {
                 const urlArticulo = `http://localhost:8080/api/articulos/${idProducto}`;
                 const responseArticulo = await fetch(urlArticulo, {
@@ -68,7 +75,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
                 const price = document.createElement('div');
                 price.classList.add('cart-price');
-                price.textContent = `$${articulo.precio}`;
+                price.textContent = `${articulo.precio}`;
 
                 const quantityContainer = document.createElement('div');
                 quantityContainer.classList.add('quantity-container');
@@ -88,15 +95,13 @@ document.addEventListener('DOMContentLoaded', async function() {
                     console.log(`ID del producto: ${idProducto}`);
                     console.log(`Cantidad seleccionada: ${quantityInput.value}`);
 
-                    try{
-                        const userId = localStorage.getItem('userId');
-                        console.log(userId)
+                    try {
                         const url = `http://localhost:8080/api/carrito/${idProducto}`;
-                        const data ={
-                            idUsuario: 1,
-                            cantidadCompra : quantityInput.value
+                        const data = {
+                            idUsuario: usuario,
+                            cantidadCompra: quantityInput.value
                         };
-                
+
                         const response = await fetch(url, {
                             method: "PUT",
                             headers: {
@@ -104,9 +109,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                             },
                             body: JSON.stringify(data)
                         });
-                
+
                         const responseData = await response.json();
-                        console.log(responseData)//Imprimir el valor del json "message"
+                        console.log(responseData); // Imprimir el valor del json "message"
                     } catch (error) {
                         console.error("Hubo un error al realizar la solicitud:", error);
                     }
@@ -126,14 +131,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                 removeIcon.addEventListener('click', async function() {
                     console.log(`ID del producto a eliminar: ${idProducto}`);
 
-                    try{
-                        const userId = localStorage.getItem('userId');
-                        console.log(userId)
+                    try {
                         const url = `http://localhost:8080/api/carrito/${idProducto}`;
-                        const data ={
-                            idUsuario: 1,
+                        const data = {
+                            idUsuario: usuario,
                         };
-                
+
                         const response = await fetch(url, {
                             method: "DELETE",
                             headers: {
@@ -141,9 +144,14 @@ document.addEventListener('DOMContentLoaded', async function() {
                             },
                             body: JSON.stringify(data)
                         });
-                
+
                         const responseData = await response.json();
-                        console.log(responseData)//Imprimir el valor del json "message"
+                        console.log(responseData); // Imprimir el valor del json "message"
+
+                        // Si la eliminación fue exitosa, elimina el elemento del DOM
+                        if (response.ok) {
+                            cartBox.remove();
+                        }
                     } catch (error) {
                         console.error("Hubo un error al realizar la solicitud:", error);
                     }
@@ -162,3 +170,4 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.error("Hubo un error al realizar la solicitud:", error);
     }
 });
+

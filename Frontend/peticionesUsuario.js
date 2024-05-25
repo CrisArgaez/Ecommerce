@@ -95,19 +95,22 @@ if (currentUrl.includes("registro.html")) {
             const responseData = await response.json();
 
             console.log(responseData.message)
-
             const usuario = parseInt(responseData.message);
             console.log(responseData.message)
             if (response.ok) {
                 // La solicitud fue exitosa (código de estado 200)
                localStorage.setItem('userId', usuario);
-               
             Swal.fire({
                 title: '¡Bienvenido!',
                 text: "Sesión iniciada correctamente",
                 icon: 'success',
                 confirmButtonText: 'Aceptar'
-            });
+
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = 'index.html';
+                }
+            })
 
             } else {
                 // La solicitud no fue exitosa
