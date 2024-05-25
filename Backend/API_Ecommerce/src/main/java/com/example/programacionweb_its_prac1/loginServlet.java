@@ -75,7 +75,7 @@ public class loginServlet extends HttpServlet {
 
 
 
-                jResp.success(req, resp, "Usuario " + InformacionUsuario.getNombres() + " " + InformacionUsuario.getApellidos() +" "+ InformacionUsuario.getId()+ " encontrado y autenticado, ¡Bienvenido!", token);
+                jResp.success(req, resp, ""+InformacionUsuario.getId(), token);
                 return;
 
             }
