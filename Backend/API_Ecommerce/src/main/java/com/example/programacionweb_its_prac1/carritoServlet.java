@@ -10,9 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @WebServlet("/carrito/*")
 public class carritoServlet extends HttpServlet {
@@ -42,9 +40,18 @@ public class carritoServlet extends HttpServlet {
 
         Carrito productoRequest = gson.fromJson(req.getReader(), Carrito.class);
 
-        Integer idUsuario = productoRequest.getIdUsuario();//Me devolvera el id que pase en el cuerpo de la peticion PUT
-        obtenerArticulosCarrito(req, resp, idUsuario);
+        // Obtener el valor del parámetro "idUsuario" de la URL
+        String idUsuarioParametro = req.getParameter("idUsuario");
+
+        if (idUsuarioParametro != null) {
+            Integer idUsuario = Integer.parseInt(idUsuarioParametro);
+            obtenerArticulosCarrito(req, resp, idUsuario);
+        } else {
+            // Manejar el caso en el que no se proporciona el parámetro "idUsuario"
+            // Puedes enviar una respuesta de error o realizar otra acción apropiada.
+        }
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -53,7 +60,8 @@ public class carritoServlet extends HttpServlet {
         Gson gson = new Gson();
 
         // Lee el JSON completo como una lista de objetos Carrito
-        List<Carrito> carritos = gson.fromJson(req.getReader(), new TypeToken<List<Carrito>>() {}.getType());
+        List<Carrito> carritos = gson.fromJson(req.getReader(), new TypeToken<List<Carrito>>() {
+        }.getType());
 
         //Todas las compras son del mismo usuario
         Integer idUsuario = carritos.get(0).getIdUsuario();
@@ -109,9 +117,9 @@ public class carritoServlet extends HttpServlet {
         ProductosDAO productosDAO = new ProductosDAO();
         int existenciaProducto = productosDAO.consultarExistencia(idProducto);
 
-        if(existenciaProducto >= idCantidadCompra && idCantidadCompra > 0){
+        if (existenciaProducto >= idCantidadCompra && idCantidadCompra > 0) {
             actualizarCantidadCompra(req, resp, idCantidadCompra, idUsuario, idProducto);
-        }else{
+        } else {
             jResp.failed(req, resp, "La cantidad que quieres comprar, sobrepasa el inventario actual", 422);
         }
     }
@@ -141,16 +149,16 @@ public class carritoServlet extends HttpServlet {
         if (carrito != null) {
             jResp.success(req, resp, "Listado de productos en el carrito del usuario " + id + ": ", carrito);
         } else {
-            jResp.failed(req, resp, "No se encontró ningún carrito para el ID especificado.",404);
+            jResp.failed(req, resp, "No se encontró ningún carrito para el ID especificado.", 404);
         }
     }
 
     private void realizarCompra(HttpServletRequest req, HttpServletResponse resp, int idUsuario) throws IOException {
         CarritoDAO carritodao = new CarritoDAO();
         int filasAfectadas = carritodao.eliminarCarritoUsuario(idUsuario);
-        if(filasAfectadas > 0){
+        if (filasAfectadas > 0) {
             jResp.success(req, resp, "Compra realizada con éxito", null);
-        }else{
+        } else {
             jResp.failed(req, resp, "Error al completar la compra", 500);
         }
     }
@@ -158,10 +166,9 @@ public class carritoServlet extends HttpServlet {
     private int verificarExistencia(int idProducto, int cantidadComprada) throws IOException {
         ProductosDAO productosDAO = new ProductosDAO();
         int existenciaActual = productosDAO.consultarExistencia(idProducto);
-        if(existenciaActual >= cantidadComprada){
+        if (existenciaActual >= cantidadComprada) {
             return 1;//Se puede realizar la compra
-        }
-        else {
+        } else {
             return 0;//No se puede realizar la compra
         }
     }
@@ -171,7 +178,7 @@ public class carritoServlet extends HttpServlet {
         int existenciaActual = productosDAO.consultarExistencia(idProducto);
         int nuevaExistencia = existenciaActual - cantidadComprada;
 
-        if(nuevaExistencia >= 0){//Si al restarle la cantidad que quiere comprar el usuario a la existencia actual, da mayor a 0, la compra se puede realizar
+        if (nuevaExistencia >= 0) {//Si al restarle la cantidad que quiere comprar el usuario a la existencia actual, da mayor a 0, la compra se puede realizar
             int filasActualizadas = productosDAO.actualizarExistencia(idProducto, nuevaExistencia);
             if (filasActualizadas > 0) {
                 jResp.success(req, resp, "Cantidad actualizada con éxito.", nuevaExistencia);
@@ -179,8 +186,7 @@ public class carritoServlet extends HttpServlet {
                 jResp.failed(req, resp, "Error al actualizar la cantidad del producto.", 422);
             }
             return 1;  //Los datos se actualizaron
-        }
-        else{
+        } else {
             return 0; //Algo fallo al actualizar el inventario
         }
     }
@@ -190,22 +196,18 @@ public class carritoServlet extends HttpServlet {
         int filasEliminadas = carritodao.eliminar(idUsuario, idProducto);
         if (filasEliminadas > 0) {
             jResp.success(req, resp, "Producto eliminado con éxito.", "");
-        }else{
-            jResp.failed(req, resp, "No se encontró ningún carrito con el ID del artículo que desea eliminar.",404);
+        } else {
+            jResp.failed(req, resp, "No se encontró ningún carrito con el ID del artículo que desea eliminar.", 404);
         }
     }
 
-    private void actualizarCantidadCompra(HttpServletRequest req, HttpServletResponse resp,Integer cantidadCompra, Integer idUsuario, Integer idProducto) throws IOException {
+    private void actualizarCantidadCompra(HttpServletRequest req, HttpServletResponse resp, Integer cantidadCompra, Integer idUsuario, Integer idProducto) throws IOException {
         CarritoDAO carritodao = new CarritoDAO();
         int filasAfectadas = carritodao.actualizarCantidadCompra(cantidadCompra, idUsuario, idProducto);
         if (filasAfectadas > 0) {
             jResp.success(req, resp, "Cantidad actualizada con éxito.", "");
-        }else{
-            jResp.failed(req, resp, "No se encontró ningún carrito con el ID del artículo que desea actualizar.",404);
+        } else {
+            jResp.failed(req, resp, "No se encontró ningún carrito con el ID del artículo que desea actualizar.", 404);
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 9032e6b503b1ca91e0fe619c863d1508c06cc57b
