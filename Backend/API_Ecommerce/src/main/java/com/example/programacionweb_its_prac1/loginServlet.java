@@ -77,7 +77,6 @@ public class loginServlet extends HttpServlet {
 
                 jResp.success(req, resp, ""+InformacionUsuario.getId(), token);
                 return;
-
             }
         }
         jResp.failed(req, resp, "Nombre de usuario o contraseña inválidos", HttpServletResponse.SC_UNAUTHORIZED);

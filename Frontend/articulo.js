@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
         });
 
+<<<<<<< HEAD
         if(articulo.existencia == 0){
             Swal.fire({
                 title: 'Error',
@@ -103,6 +104,22 @@ document.addEventListener('DOMContentLoaded', async function() {
                         icon: 'Warning',
                         confirmButtonText: 'Aceptar'
                     });
+=======
+
+        //Anadir el listener al icono de agregar al carrito
+        const botonCarrito = document.querySelector('.buy-btn');
+        botonCarrito.addEventListener('click', () => {
+            event.stopPropagation(); // Evitar que se active el evento click de la tarjeta
+                //console.log("Agregado al carrito:", producto);
+                if(responseData.data.existencia == 0){
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'El producto no se encuentra disponible',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    botonCarrito.disable = true;
+>>>>>>> 7c367a6021ef81aab742b1768b0e92a0be9336f2
                 }
                 else{
                     Swal.fire({
@@ -123,7 +140,11 @@ document.addEventListener('DOMContentLoaded', async function() {
                 const userId = localStorage.getItem('userId');
                 console.log(userId)
 
+<<<<<<< HEAD
                     if(userId == null || userId == 0 || userId == undefined){
+=======
+                    if(userId == null || userId == 0){
+>>>>>>> 7c367a6021ef81aab742b1768b0e92a0be9336f2
                         swal.fire({
                             title: 'Error',
                             text: 'Debe iniciar sesión',

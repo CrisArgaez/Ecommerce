@@ -89,11 +89,17 @@ public class articulosServlet extends HttpServlet{
 
     private void agregarProducto(HttpServletRequest req, HttpServletResponse resp, Integer id_Usuario, Integer id_Producto) throws IOException {
         ProductosDAO articulosDAO = new ProductosDAO();
-        int respuesta = articulosDAO.agregarArticuloCarrito(id_Usuario, id_Producto);
-        if(respuesta != -1){
-            jResp.success(req, resp, "El producto ha sido guardado exitosamente", null);
+        int verificarRepetido = articulosDAO.verificarRepetido(id_Usuario, id_Producto);//Si devuelve uno, el producto ya existe en el carrito
+
+        if(verificarRepetido == 1){
+            jResp.failed(req, resp, "Ya haz guardado este producto en tu carrito", HttpServletResponse.SC_CONFLICT);
         }else{
-            jResp.failed(req, resp, "No se ha podido guardar el producto", HttpServletResponse.SC_NOT_FOUND);
+            int respuesta = articulosDAO.agregarArticuloCarrito(id_Usuario, id_Producto);
+            if(respuesta != -1){
+                jResp.success(req, resp, "El producto ha sido guardado exitosamente", null);
+            }else{
+                jResp.failed(req, resp, "No se ha podido guardar el producto", HttpServletResponse.SC_NOT_FOUND);
+            }
         }
     }
 }

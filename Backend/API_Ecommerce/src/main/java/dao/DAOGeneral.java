@@ -17,6 +17,8 @@ public interface DAOGeneral<K, T, S> {
 
     public int eliminarCarritoUsuario(K id_Usuario);
 
+    public int verificarRepetido(K id_Usuario, K id_Producto);
+
     public int consultarExistencia(K id);
 
     public int actualizarExistencia(K id, int nuevaCantidad);

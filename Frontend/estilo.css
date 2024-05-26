@@ -84,6 +84,8 @@ body {
     padding: 20px 45px 20px 20px;
 }
 
+
+
 .input-box input::placeholder {
     color: rgba(255, 255, 255, 0.7); /* Mejorar la legibilidad del placeholder */
 }
