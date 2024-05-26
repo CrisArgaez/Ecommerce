@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', async function() {
-
     const usuario = localStorage.getItem('userId');
     console.log("El usuario es: " + usuario);
+
+    let cantidadesSeleccionadas = [];
     
-    if (usuario == null || usuario == 0) {
-        swal.fire({
+    if (usuario == null || usuario == 0 || usuario == undefined) {
+        Swal.fire({
             title: 'Error',
             text: 'Debe iniciar sesión',
             icon: 'error',
@@ -13,14 +14,11 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (result.value) {
                 window.location.href = 'acceder.html';
             }
-        })
-    }
+        });
+        return; // Termina la ejecución si el usuario no está definido
+    }
 
     try {
-
-        const usuario = localStorage.getItem('userId');
-        console.log("El usuario es: " + usuario);
-
         const urlCarrito = `http://localhost:8080/api/carrito?idUsuario=${usuario}`;
         const responseCarrito = await fetch(urlCarrito, {
             method: "GET",
@@ -31,34 +29,24 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         const carritoData = await responseCarrito.json();
         console.log(carritoData.message);
+        const numeroProductos = carritoData.data.length;
+        const listaProductos = carritoData.data.map(item => item.idProducto);
+        const respuesta = listaProductos.map(idProducto => ({
+            idUsuario: usuario,
+            idProducto,
+            cantidadComprada: "2"
+        }));
 
-        var numeroProductos = carritoData.data.length
-        var listaProductos = []
-
-        for(var i = 0; i<numeroProductos; i++){
-            listaProductos.push(carritoData.data[i].idProducto)
-        }
-
-        var respuesta = []
-
-        for (let i = 0; i < numeroProductos; i++) {
-            const objeto = {
-                idUsuario: userId,
-                idProducto: listaProductos[i],
-                cantidadComprada: "2"
-            };
-            respuesta.push(objeto);
-        }
-
-        console.log(respuesta)
-
-        const numeroArticulos = carritoData.data.length;
-        const listaArticulos = carritoData.data.map(item => item.idProducto);
+        console.log(respuesta);
 
         const cartContent = document.querySelector('.cart-content');
+        if (!cartContent) {
+            console.error('El elemento .cart-content no se encontró en el DOM.');
+            return;
+        }
         cartContent.innerHTML = ''; // Clear existing content
 
-        for (const idProducto of listaArticulos) {
+        for (const idProducto of listaProductos) {
             try {
                 const urlArticulo = `http://localhost:8080/api/articulos/${idProducto}`;
                 const responseArticulo = await fetch(urlArticulo, {
@@ -97,6 +85,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 const quantityInput = document.createElement('input');
                 quantityInput.type = 'number';
                 quantityInput.value = 1;
+                quantityInput.setAttribute('data-id', idProducto);
                 quantityInput.classList.add('cart-quantity');
 
                 const quantityButton = document.createElement('button');
@@ -109,15 +98,13 @@ document.addEventListener('DOMContentLoaded', async function() {
                     console.log(`ID del producto: ${idProducto}`);
                     console.log(`Cantidad seleccionada: ${quantityInput.value}`);
 
-                    try{
-                        const userId = localStorage.getItem('userId');
-                        console.log(userId)
+                    try {
                         const url = `http://localhost:8080/api/carrito/${idProducto}`;
-                        const data ={
-                            idUsuario: userId,
-                            cantidadCompra : quantityInput.value
+                        const data = {
+                            idUsuario: usuario,
+                            cantidadCompra: quantityInput.value
                         };
-                
+
                         const response = await fetch(url, {
                             method: "PUT",
                             headers: {
@@ -125,9 +112,28 @@ document.addEventListener('DOMContentLoaded', async function() {
                             },
                             body: JSON.stringify(data)
                         });
-                
+
                         const responseData = await response.json();
-                        console.log(responseData)//Imprimir el valor del json "message"
+                        if(responseData.code === 422){
+                            swal.fire({
+                                title: 'Espera !!',
+                                text: 'La cantidad del producto : "' + articulo.nombre + '" que deseas sobrepasa a la cantidad existente',
+                                icon: 'warning',
+                                confirmButtonText: 'Aceptar'
+                            }) 
+                        } else {
+                            cantidadesSeleccionadas[idProducto] = quantityInput.value
+
+                            swal.fire({
+                                title: 'Exito',
+                                text: 'Has agregado ' + quantityInput.value + ' artículos del producto "' + articulo.nombre + '" con éxito',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar'
+                            });
+                        }         
+                        
+                        
+
                     } catch (error) {
                         console.error("Hubo un error al realizar la solicitud:", error);
                     }
@@ -147,14 +153,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                 removeIcon.addEventListener('click', async function() {
                     console.log(`ID del producto a eliminar: ${idProducto}`);
 
-                    try{
-                        const userId = localStorage.getItem('userId');
-                        console.log(userId)
+                    try {
                         const url = `http://localhost:8080/api/carrito/${idProducto}`;
-                        const data ={
-                            idUsuario: userId,
+                        const data = {
+                            idUsuario: usuario,
                         };
-                
+
                         const response = await fetch(url, {
                             method: "DELETE",
                             headers: {
@@ -162,9 +166,19 @@ document.addEventListener('DOMContentLoaded', async function() {
                             },
                             body: JSON.stringify(data)
                         });
-                
+
                         const responseData = await response.json();
-                        console.log(responseData)//Imprimir el valor del json "message"
+                        console.log(responseData); // Imprimir el valor del json "message"
+                  
+                        if (response.ok) {
+                            cartBox.remove();
+                            swal.fire({
+                                title: 'Listo',
+                                text: 'Artículo eliminado',
+                                icon: 'success',
+                                confirmButtonText: 'Aceptar'
+                            })
+                        }
                     } catch (error) {
                         console.error("Hubo un error al realizar la solicitud:", error);
                     }
@@ -179,6 +193,96 @@ document.addEventListener('DOMContentLoaded', async function() {
                 console.error("Hubo un error al realizar la solicitud:", error);
             }
         }
+
+        // Añadir event listener al botón de compra
+        const buyButton = document.querySelector('.btn-buy');
+        buyButton.addEventListener('click', async function() {
+            console.log("Id del Usuario:" + usuario);
+
+            try {
+                const compraData = await obtenerDatosCompra(usuario);
+
+                let total = 0;
+                for (const item of compraData) {
+                    if (cantidadesSeleccionadas[item.idProducto]) {
+                        const urlArticulo = `http://localhost:8080/api/articulos/${item.idProducto}`;
+                        const responseArticulo = await fetch(urlArticulo, {
+                            method: "GET",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                        });
+                        const articuloData = await responseArticulo.json();
+                        const articulo = articuloData.data[0];
+                        total += articulo.precio * item.cantidadCompra;
+                    }
+                }
+                if (total === 0) {
+                    swal.fire({
+                        title: 'Espera !!',
+                        text: 'Probablemente olvidaste confirmar la cantidad de los articulos que deseas comprar',
+                        icon: 'warning',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    return;
+                }
+
+                swal.fire({
+                    title: 'Muchas Gracias !!',
+                    text: `Artículos comprados con éxito !! Su costo total fue: $${total}`,
+                    icon: 'success',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.value) {
+                        window.location.href = 'index.html';
+                    }
+                });
+
+                const urlCompra = "http://localhost:8080/api/carrito";
+                const responseCompra = await fetch(urlCompra, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(compraData)
+                });
+
+                const compraResponseData = await responseCompra.json();
+                console.log(compraResponseData);
+                console.log(compraResponseData.message);
+
+            } catch (error) {
+                console.error("Hubo un error al realizar la solicitud:", error);
+            }
+        });
+
+        async function obtenerDatosCompra(usuario) {
+            try {
+                const urlCarrito = `http://localhost:8080/api/carrito?idUsuario=${usuario}`;
+                const responseCarrito = await fetch(urlCarrito, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                });
+        
+                const carritoData = await responseCarrito.json();
+        
+                // Crear el JSON con el formato necesario para la compra
+                const compraData = carritoData.data.map(item => ({
+                    idUsuario: usuario,
+                    idProducto: item.idProducto,
+                    cantidadCompra: item.cantidadCompra
+                }));
+        
+                return compraData; // Devuelve los datos de compra
+        
+            } catch (error) {
+                console.error("Hubo un error al realizar la solicitud:", error);
+                throw error; // Propaga el error
+            }
+        }
+
     } catch (error) {
         console.error("Hubo un error al realizar la solicitud:", error);
     }

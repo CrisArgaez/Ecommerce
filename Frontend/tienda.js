@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
   
         const responseData = await response.json();
-        console.log(responseData.message)//Imprimir el valor del json "message"
-        console.log(responseData.data)
+        console.log(responseData);
+    
   
         const containerItems = document.querySelector(".container-items"); //Contenedor de los productos
   
@@ -42,24 +42,32 @@ document.addEventListener('DOMContentLoaded', async function() {
         
             containerItems.appendChild(item);
   
-            //Agregar el listener al div del producto para redirigirlo a una pagina con sus especificaciones
+            
+           
             item.addEventListener("click", () => {
-                window.location.href = `articulo.html?id=${producto.id}`;
-            });
-
-            //Agregar el listener al icono de agregar al carrito
-            botonCarrito.addEventListener("click", () => {
-                event.stopPropagation(); // Evitar que se active el evento click de la tarjeta
-                //console.log("Agregado al carrito:", producto);
-                if(responseData.data.existencia == 0){
+                if (producto.existencia === 0) {
                     Swal.fire({
                         title: 'Error',
                         text: 'El producto no se encuentra disponible',
                         icon: 'error',
                         confirmButtonText: 'Aceptar'
                     });
-                    botonCarrito.disable = true;
+                    item.disabled = true; // Deshabilitar el elemento
+                } else {
+                    window.location.href = `articulo.html?id=${producto.id}`;
                 }
+            });
+            //Agregar el listener al icono de agregar al carrito
+            botonCarrito.addEventListener('click', (event) => {
+                event.stopPropagation(); 
+                if(responseData.code === 409 || responseData.code === 422){
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'El producto ya se encuentra en el carrito',
+                        icon: 'Warning',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }              
                 else{
                     Swal.fire({
                         title: '¡Agregado al carrito!',
@@ -70,18 +78,24 @@ document.addEventListener('DOMContentLoaded', async function() {
                 const idProducto = producto.id;
                 agregarAlCarrito(idProducto);
                 }
+
+
                 
             });
-  
-            
+
           });
 
          async function agregarAlCarrito(producto) {
             try{
 
                 const userId = localStorage.getItem('userId');
-                console.log(userId)
+                console.log("El usuario actual es : " + userId)
 
+
+                if(userId == undefined){
+                    userId = null;
+                }
+                
                     if(userId == null || userId == 0){
                         swal.fire({
                             title: 'Error',
@@ -124,17 +138,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   });
 
-
-
-  
-
-
-
-
-
-  /*function agregarAlCarrito(producto) {
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    carrito.push(producto);
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-  }*/
-
+function logout() {
+    Swal.fire({
+        title: '¿Estás seguro de cerrar sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, cerrar sesión'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.removeItem('userId');
+            window.location.href = 'acceder.html'; // Redirige al usuario a la página de acceso
+        }
+    });
+    
+}

@@ -61,9 +61,13 @@ header{
 }
 
 .logo{
+    text-decoration: underline;
+    background-color: transparent;
+    border: none;
     font-size: 1.2rem;
     color: var(--text-color);
     font-weight: 400;
+    cursor: pointer;
 }
 
 #cart-icon{

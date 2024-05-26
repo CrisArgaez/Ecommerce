@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" 
     integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="carrito.css" />
 </head>
 
 <body>
@@ -20,7 +21,7 @@
         <div class="nav container">
             <a href="index.html" class="logo">EcommerceITS</a>
 
-            <a href="acceder.html" class="logo">Login</a>
+            <button onclick="logout()" class="logo">Cerrar Sesion</button>
 
             <!--icono del carrito de compras-->
             <a href="carrito-de-compras.html"><i class='bx bx-cart' style='color:#2a4995' id="cart-icon"></i></a>
@@ -62,8 +63,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script src="articulo.js"></script>
+    <script src="tienda.js"> </script>
 
 </body>
 </html>

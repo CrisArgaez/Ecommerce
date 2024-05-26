@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         //console.log(responseData.data) //Imprimir el valor del json "message"
         const articulo = responseData.data[0];
+        console.log(articulo)
 
          // Almacena la URL de la imagen principal actual
          let imagenPrincipalURL = articulo.urlImagen;
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.getElementById('precio-producto').textContent = `$${articulo.precio.toFixed(2)}`,
         document.getElementById('cantidad-disponible').textContent = 'Cantidades disponibles: ' + articulo.existencia;
         document.getElementById('descripción-producto').textContent = articulo.descripcion;
+        
 
         // Obtener las especificaciones como un array
         const especificacionesArray = articulo.especificacion.split(",");
@@ -76,6 +78,85 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
             });
         });
+
+        if(articulo.existencia == 0){
+            Swal.fire({
+                title: 'Error',
+                text: 'El producto no se encuentra disponible',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+                if (result.value) {
+                    window.location.href = 'index.html';
+                }
+            });
+            botonCarrito.disabled = true;
+        }
+        //Anadir el listener al icono de agregar al carrito
+        const botonCarrito = document.querySelector('.buy-btn');
+        botonCarrito.addEventListener('click', (event) => {
+            event.stopPropagation(); 
+                if(responseData.code == 409 || responseData.code == 422){ //Validar si el producto ya se encuentra en el carrito
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'El producto ya se encuentra en el carrito',
+                        icon: 'Warning',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+                else{
+                    Swal.fire({
+                        title: '¡Agregado al carrito!',
+                        text: 'El producto ha sido agregado al carrito',
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    });
+                const idProducto = articulo.id;
+                agregarAlCarrito(idProducto);
+                }
+        });
+
+        //Anadir la funcion de agregar al carrito
+        async function agregarAlCarrito(producto) {
+            try{
+
+                const userId = localStorage.getItem('userId');
+                console.log(userId)
+
+                    if(userId == null || userId == 0 || userId == undefined){
+                        swal.fire({
+                            title: 'Error',
+                            text: 'Debe iniciar sesión',
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        }).then((result) => {
+                            if (result.value) {
+                                window.location.href = 'acceder.html';
+                            }
+                        });
+                    }
+                    else{
+                const url = `http://localhost:8080/api/articulos/${producto}`;
+                const data ={
+                    id: userId
+                };
+        
+                const response = await fetch(url, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+        
+                const responseData = await response.json();
+                console.log(responseData.message)//Imprimir el valor del json "message"
+                }
+            } catch (error) {
+                console.error("Hubo un error al realizar la solicitud:", error);
+            }
+        
+          }
         
 
     } catch (error) {

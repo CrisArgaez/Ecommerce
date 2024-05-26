@@ -100,7 +100,6 @@ if (currentUrl.includes("registro.html")) {
             if (response.ok) {
                 // La solicitud fue exitosa (código de estado 200)
                localStorage.setItem('userId', usuario);
-
             Swal.fire({
                 title: '¡Bienvenido!',
                 text: "Sesión iniciada correctamente",
@@ -117,7 +116,7 @@ if (currentUrl.includes("registro.html")) {
                 console.error("Error al registrar el usuario. Código de estado:", response.status);
                 Swal.fire({
                     title: 'Error',
-                    text: `Error al registrar el usuario. Código de estado: ${response.status}`,
+                    text: `Error al iniciar sesion , Código de estado: ${response.status}`,
                     icon: 'error',
                     confirmButtonText: 'Aceptar'
                 });
