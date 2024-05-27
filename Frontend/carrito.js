@@ -201,8 +201,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             try {
                 const compraData = await obtenerDatosCompra(usuario);
-
+            
                 let total = 0;
+                let detalleCompra = ''; // String para almacenar los detalles de la compra
+            
                 for (const item of compraData) {
                     if (cantidadesSeleccionadas[item.idProducto]) {
                         const urlArticulo = `http://localhost:8080/api/articulos/${item.idProducto}`;
@@ -214,24 +216,33 @@ document.addEventListener('DOMContentLoaded', async function() {
                         });
                         const articuloData = await responseArticulo.json();
                         const articulo = articuloData.data[0];
-                        total += articulo.precio * item.cantidadCompra;
+                        const subtotal = articulo.precio * item.cantidadCompra;
+                        total += subtotal;
+            
+                        // Agregar los detalles de cada producto al string de detalleCompra
+                        detalleCompra += `Producto: ${articulo.nombre}, Cantidad: ${item.cantidadCompra}, Subtotal: $${subtotal.toFixed(2)}\n`;
                     }
                 }
+            
                 if (total === 0) {
                     swal.fire({
                         title: 'Espera !!',
-                        text: 'Probablemente olvidaste confirmar la cantidad de los articulos que deseas comprar',
+                        text: 'Probablemente olvidaste confirmar la cantidad de los artículos que deseas comprar',
                         icon: 'warning',
                         confirmButtonText: 'Aceptar'
                     });
                     return;
                 }
-
+            
+                // Mostrar los detalles de la compra y el total
                 swal.fire({
-                    title: 'Muchas Gracias !!',
-                    text: `Artículos comprados con éxito !! Su costo total fue: $${total}`,
-                    icon: 'success',
-                    confirmButtonText: 'Aceptar'
+                    title: 'Detalle de su compra',
+                    html: `<pre>${detalleCompra}</pre>Total: $${total.toFixed(2)}`,
+                    icon: 'info',
+                    confirmButtonText: 'Aceptar',
+                    customClass: {
+                        popup: 'mi-clase-personalizada'
+                    }
                 }).then((result) => {
                     if (result.value) {
                         window.location.href = 'index.html';
