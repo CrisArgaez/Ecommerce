@@ -41,10 +41,12 @@ document.addEventListener('DOMContentLoaded', async function() {
             item.appendChild(botonCarrito);
         
             containerItems.appendChild(item);
-  
+            
+            
             
            
             item.addEventListener("click", () => {
+                console.log(`existencia del producto: ${producto.existencia}`);
                 if (producto.existencia === 0) {
                     Swal.fire({
                         title: 'Error',
@@ -52,7 +54,8 @@ document.addEventListener('DOMContentLoaded', async function() {
                         icon: 'error',
                         confirmButtonText: 'Aceptar'
                     });
-                    item.disabled = true; // Deshabilitar el elemento
+                    item.removeChild(botonCarrito);
+                    item.disabled = true;
                 } else {
                     window.location.href = `articulo.html?id=${producto.id}`;
                 }
@@ -60,6 +63,23 @@ document.addEventListener('DOMContentLoaded', async function() {
             //Agregar el listener al icono de agregar al carrito
             botonCarrito.addEventListener('click', (event) => {
                 event.stopPropagation(); 
+                const userId = localStorage.getItem('userId');
+                if(userId == null || userId == 0 || userId == undefined){
+                    swal.fire({
+                        title: 'No hay ninguna sesion iniciado',
+                        text: 'Deseas iniciar una sesion?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Iniciar sesion'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'acceder.html'; // Redirige al usuario a la página de acceso
+                        }
+                    });
+                    
+                }
                 if(responseData.code === 409 || responseData.code === 422){
                     Swal.fire({
                         title: 'Error',
@@ -91,23 +111,22 @@ document.addEventListener('DOMContentLoaded', async function() {
                 const userId = localStorage.getItem('userId');
                 console.log("El usuario actual es : " + userId)
 
-
-                if(userId == undefined){
-                    userId = null;
-                }
-                
-                    if(userId == null || userId == 0){
-                        swal.fire({
-                            title: 'Error',
-                            text: 'Debe iniciar sesión',
-                            icon: 'error',
-                            confirmButtonText: 'Aceptar'
-                        }).then((result) => {
-                            if (result.value) {
-                                window.location.href = 'acceder.html';
-                            }
-                        });
-                    }
+                if(userId == null || userId == 0 || userId == undefined){
+                    swal.fire({
+                        title: 'No hay ninguna sesion iniciado',
+                        text: 'Deseas iniciar una sesion?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Iniciar sesion'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'acceder.html'; // Redirige al usuario a la página de acceso
+                        }
+                    });
+                    
+                }            
                     else{
                 const url = `http://localhost:8080/api/articulos/${producto}`;
                 const data ={
@@ -123,6 +142,15 @@ document.addEventListener('DOMContentLoaded', async function() {
                 });
         
                 const responseData = await response.json();
+                console.log(responseData)
+                if(responseData.code === 409 || responseData.code === 422){
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'El producto ya se encuentra en el carrito',
+                        icon: 'Warning',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }              
                 console.log(responseData.message)//Imprimir el valor del json "message"
                 }
             } catch (error) {
@@ -139,6 +167,26 @@ document.addEventListener('DOMContentLoaded', async function() {
   });
 
 function logout() {
+    console.log("Cerrando sesión...");
+    const userId = localStorage.getItem('userId');
+    if(userId == null || userId == 0 || userId == undefined){
+        swal.fire({
+            title: 'No hay ninguna sesion iniciado',
+            text: 'Deseas iniciar una sesion?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Iniciar sesion'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = 'acceder.html'; // Redirige al usuario a la página de acceso
+            }
+        });
+        
+    }
+
+    else{
     Swal.fire({
         title: '¿Estás seguro de cerrar sesión?',
         icon: 'warning',
@@ -153,4 +201,5 @@ function logout() {
         }
     });
     
+    }
 }

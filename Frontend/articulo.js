@@ -79,7 +79,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
         });
 
-<<<<<<< HEAD
         if(articulo.existencia == 0){
             Swal.fire({
                 title: 'Error',
@@ -97,30 +96,25 @@ document.addEventListener('DOMContentLoaded', async function() {
         const botonCarrito = document.querySelector('.buy-btn');
         botonCarrito.addEventListener('click', (event) => {
             event.stopPropagation(); 
-                if(responseData.code == 409 || responseData.code == 422){ //Validar si el producto ya se encuentra en el carrito
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'El producto ya se encuentra en el carrito',
-                        icon: 'Warning',
-                        confirmButtonText: 'Aceptar'
+                const userId = localStorage.getItem('userId');
+                if(userId == null || userId == 0 || userId == undefined){
+                    swal.fire({
+                        title: 'No hay ninguna sesion iniciado',
+                        text: 'Deseas iniciar una sesion?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Iniciar sesion'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'acceder.html'; // Redirige al usuario a la página de acceso
+                        }
                     });
-=======
-
-        //Anadir el listener al icono de agregar al carrito
-        const botonCarrito = document.querySelector('.buy-btn');
-        botonCarrito.addEventListener('click', () => {
-            event.stopPropagation(); // Evitar que se active el evento click de la tarjeta
-                //console.log("Agregado al carrito:", producto);
-                if(responseData.data.existencia == 0){
-                    Swal.fire({
-                        title: 'Error',
-                        text: 'El producto no se encuentra disponible',
-                        icon: 'error',
-                        confirmButtonText: 'Aceptar'
-                    });
-                    botonCarrito.disable = true;
->>>>>>> 7c367a6021ef81aab742b1768b0e92a0be9336f2
+                    
                 }
+            
+                
                 else{
                     Swal.fire({
                         title: '¡Agregado al carrito!',
@@ -140,22 +134,22 @@ document.addEventListener('DOMContentLoaded', async function() {
                 const userId = localStorage.getItem('userId');
                 console.log(userId)
 
-<<<<<<< HEAD
-                    if(userId == null || userId == 0 || userId == undefined){
-=======
-                    if(userId == null || userId == 0){
->>>>>>> 7c367a6021ef81aab742b1768b0e92a0be9336f2
-                        swal.fire({
-                            title: 'Error',
-                            text: 'Debe iniciar sesión',
-                            icon: 'error',
-                            confirmButtonText: 'Aceptar'
-                        }).then((result) => {
-                            if (result.value) {
-                                window.location.href = 'acceder.html';
-                            }
-                        });
-                    }
+                if(userId == null || userId == 0 || userId == undefined){
+                    swal.fire({
+                        title: 'No hay ninguna sesion iniciado',
+                        text: 'Deseas iniciar una sesion?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Iniciar sesion'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'acceder.html'; // Redirige al usuario a la página de acceso
+                        }
+                    });
+                    
+                }            
                     else{
                 const url = `http://localhost:8080/api/articulos/${producto}`;
                 const data ={
@@ -172,6 +166,15 @@ document.addEventListener('DOMContentLoaded', async function() {
         
                 const responseData = await response.json();
                 console.log(responseData.message)//Imprimir el valor del json "message"
+                if(responseData.code === 409 || responseData.code === 422){
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'El producto ya se encuentra en el carrito',
+                        icon: 'Warning',
+                        confirmButtonText: 'Aceptar'
+                    });
+                    botonCarrito.disabled = true;
+                }  
                 }
             } catch (error) {
                 console.error("Hubo un error al realizar la solicitud:", error);
