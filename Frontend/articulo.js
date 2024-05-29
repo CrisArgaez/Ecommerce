@@ -79,24 +79,36 @@ document.addEventListener('DOMContentLoaded', async function() {
             });
         });
 
-        if(articulo.existencia == 0){
-            Swal.fire({
-                title: 'Error',
-                text: 'El producto no se encuentra disponible',
-                icon: 'error',
+
+
+        if (articulo.existencia <= 5) {
+            swal.fire({
+                title: 'ultima oportunidad',
+                text: 'Ultimas unidades, solo hay ' + articulo.existencia + ' disponibles',
+                icon: 'info',
                 confirmButtonText: 'Aceptar'
-            }).then((result) => {
-                if (result.value) {
-                    window.location.href = 'index.html';
-                }
-            });
-            botonCarrito.disabled = true;
+            })
         }
         //Anadir el listener al icono de agregar al carrito
         const botonCarrito = document.querySelector('.buy-btn');
         botonCarrito.addEventListener('click', (event) => {
             event.stopPropagation(); 
                 const userId = localStorage.getItem('userId');
+
+                if(articulo.existencia == 0){
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'El producto no se encuentra disponible',
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    }).then((result) => {
+                        if (result.value) {
+                            window.location.href = 'index.html';
+                        }
+                    });
+                    botonCarrito.disabled = true;
+                }
+
                 if(userId == null || userId == 0 || userId == undefined){
                     swal.fire({
                         title: 'No hay ninguna sesion iniciado',
@@ -170,7 +182,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     Swal.fire({
                         title: 'Error',
                         text: 'El producto ya se encuentra en el carrito',
-                        icon: 'Warning',
+                        icon: 'warning',
                         confirmButtonText: 'Aceptar'
                     });
                     botonCarrito.disabled = true;

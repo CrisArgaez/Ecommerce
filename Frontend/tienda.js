@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', async function() {
            
             item.addEventListener("click", () => {
                 console.log(`existencia del producto: ${producto.existencia}`);
+                
                 if (producto.existencia === 0) {
                     Swal.fire({
                         title: 'Error',
@@ -55,9 +56,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                         confirmButtonText: 'Aceptar'
                     });
                     item.removeChild(botonCarrito);
-                } else {
+                } 
+
+                else{
                     window.location.href = `articulo.html?id=${producto.id}`;
                 }
+
             });
             //Agregar el listener al icono de agregar al carrito
             botonCarrito.addEventListener('click', (event) => {
@@ -75,6 +79,17 @@ document.addEventListener('DOMContentLoaded', async function() {
                             confirmButtonText: 'Aceptar'
                         });
                         item.removeChild(botonCarrito);
+                    }
+
+                    if (productocheck <= 5) {
+                        swal.fire({
+                            title: 'ultima oportunidad',
+                            text: 'Ultimas unidades, solo hay ' + productocheck + ' disponibles',
+                            icon: 'info',
+                            confirmButtonText: 'Aceptar'
+                        })
+                        const idProducto = producto.id;
+                        agregarAlCarrito(idProducto);
                     }
                     else if(userId == null || userId == 0 || userId == undefined){
                         swal.fire({
